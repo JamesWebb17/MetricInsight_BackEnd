@@ -7,9 +7,9 @@ Function for calculating the Power usage of a process.
 
 import time
 
-from Read_File.hwmon import Hwmon
-from Shared import flags
-from Shared.result import Result
+from MetricInsight.Read_File.hwmon import Hwmon
+from MetricInsight.Shared import flags
+from MetricInsight.Shared.result import Result
 
 
 def utilisation_power(frequency, interval, result):

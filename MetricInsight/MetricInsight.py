@@ -10,7 +10,7 @@ import threading
 from CPU.utilisation import utilisation_cpu, utilisation_cpus
 from GPU.utilisation import utilisation_gpu
 from Memory.utilisation import utilisation_mem, utilisation_mems
-import Arguments
+from Arguments.usage import usage
 from Power.utilisation import utilisation_power
 
 from Shared import flags
@@ -27,7 +27,7 @@ def main():
     threads = []
     result = []
 
-    args = Arguments.usage()
+    args = usage()
 
     if args.verbose:
         flags.VERBOSE_MODE_FLAG = True

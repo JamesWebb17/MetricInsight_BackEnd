@@ -7,10 +7,12 @@ Function for calculating the CPU usage of a process.
 
 import time
 
-from Read_File.PID.stat import Stat as ProcStat
-from Read_File.uptime import Uptime
-from Shared import flags
-from Shared.result import Result
+from MetricInsight.Read_File.PID.stat import Stat as ProcStat
+from MetricInsight.Read_File.stat import Stat
+from MetricInsight.Read_File.uptime import Uptime
+from MetricInsight.Shared import flags
+from MetricInsight.Shared.result import Result
+
 
 def calcul_utilisation_cpu(stat, uptime, clock_ticks_per_second):
     """
@@ -58,7 +60,7 @@ def utilisation_cpu(pid, frequency, interval, result):
         list_uptime.append(uptime_info.total_operational_time)
         list_temps.append(now - start)
 
-        time.sleep(1/frequency)
+        time.sleep(1 / frequency)
 
     list_charge_cpu = calcul_charge_cpu(list_cpu, list_uptime)
     result.append(Result("CPU", "Utilisation du cpu (%)", [list_temps[:-1], list_charge_cpu]))
@@ -69,7 +71,7 @@ def utilisation_cpu(pid, frequency, interval, result):
 def calcul_charge_cpu(list_utime, list_uptime):
     list_charge_cpu = []
     for i in range(0, len(list_uptime) - 1):
-        cpu_utime = (list_utime[i + 1] - list_utime[i])/100
+        cpu_utime = (list_utime[i + 1] - list_utime[i]) / 100
         cpu_time = list_uptime[i + 1] - list_uptime[i]
 
         list_charge_cpu.append(cpu_utime / cpu_time * 100)
@@ -119,15 +121,18 @@ def utilisation_cpus(frequency, interval, result):
         list_cpu[0].append(process_info.cpu_stats.get(f"cpu").utime + process_info.cpu_stats.get(f"cpu").stime)
 
         for i in range(1, len(list_cpu)):
-            list_cpu[i].append(process_info.cpu_stats.get(f"cpu{i-1}").utime + process_info.cpu_stats.get(f"cpu{i-1}").stime)
+            list_cpu[i].append(
+                process_info.cpu_stats.get(f"cpu{i - 1}").utime + process_info.cpu_stats.get(f"cpu{i - 1}").stime)
 
         list_temps.append(now - start)
 
-        time.sleep(1/frequency)
+        time.sleep(1 / frequency)
         list_uptime.append(uptime_info.total_operational_time)
 
-    result.append(Result(f"CPU", "Utilisation du cpu (%)", [list_temps[:-1], calcul_charge_cpu(list_cpu[0], list_uptime)]))
+    result.append(
+        Result(f"CPU", "Utilisation du cpu (%)", [list_temps[:-1], calcul_charge_cpu(list_cpu[0], list_uptime)]))
     for i in range(1, len(list_cpu)):
-        result.append(Result(f"CPU{i-1}", "Utilisation du cpu (%)", [list_temps[:-1], calcul_charge_cpu(list_cpu[i], list_uptime)]))
+        result.append(Result(f"CPU{i - 1}", "Utilisation du cpu (%)",
+                             [list_temps[:-1], calcul_charge_cpu(list_cpu[i], list_uptime)]))
     flags.THREAD_CPU_END_FLAG = True
     return 0

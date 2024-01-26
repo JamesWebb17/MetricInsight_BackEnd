@@ -7,9 +7,9 @@ Function for calculating the GPU charge.
 
 import time
 
-from Read_File.PID.gpu import GPU
-from Shared import flags
-from Shared.result import Result
+from MetricInsight.Read_File.PID.gpu import GPU
+from MetricInsight.Shared import flags
+from MetricInsight.Shared.result import Result
 
 
 def utilisation_gpu(frequency, interval, result):

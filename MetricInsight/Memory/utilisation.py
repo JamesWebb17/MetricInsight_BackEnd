@@ -7,10 +7,10 @@ Function for calculating the Memory usage of a process.
 
 import time
 
-from Read_File.PID.statm import Statm
-from Read_File.meminfo import MemInfo
-from Shared import flags
-from Shared.result import Result
+from MetricInsight.Read_File.PID.statm import Statm
+from MetricInsight.Read_File.meminfo import MemInfo
+from MetricInsight.Shared import flags
+from MetricInsight.Shared.result import Result
 
 
 def utilisation_mem(pid, frequency, interval, result):
