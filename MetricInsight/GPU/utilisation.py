@@ -61,7 +61,7 @@ def web_utilisation_gpu(shared_queue, configuration):
     list_gpu = []
     list_temps = []
 
-    while process_info.read() != -1 and now - start < interval and flags.THREAD_CPU_END_FLAG is False and flags.THREAD_MEM_END_FLAG is False:
+    while float(process_info.read()) != -1 and now - start < interval and flags.THREAD_CPU_END_FLAG is False and flags.THREAD_MEM_END_FLAG is False:
         now = time.clock_gettime(time.CLOCK_REALTIME)
 
         list_gpu.append(process_info.load / 10)
