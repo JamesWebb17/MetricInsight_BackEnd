@@ -1,6 +1,12 @@
+import os
+
 from flask import Flask
 from flask_cors import CORS
+from dotenv import load_dotenv
+
 from routes import contact, metricInsight, api
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -12,4 +18,10 @@ app.register_blueprint(api.api_blueprint, url_prefix='/api')
 
 
 if __name__ == '__main__':
-    app.run()
+
+    host = os.getenv("SERVER_IP", "127.0.0.1")
+    port = int(os.getenv("PORT", 8000))
+
+    print(f"Server running on {host}:{port}")
+
+    app.run(host="148.60.220.43", port=port)
