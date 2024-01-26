@@ -11,15 +11,15 @@ global shared_queues
 MetricInsight_blueprint = Blueprint('MetricInsight', __name__, url_prefix='/MetricInsight')
 
 
-@MetricInsight_blueprint.route('/test', methods=['GET'])
+@MetricInsight_blueprint.route('/get_data', methods=['GET'])
 def test():
     print("Debut du traitement...")
-    #T = conso(shared_queue)
-    #if not T:
-        #print("Fin du traitement.")
-    return jsonify("STOP")
+    T = conso(shared_queues['GPU'])
+    if not T:
+        print("Fin du traitement.")
+        return jsonify("STOP")
     #print("Données envoyées : ", T)
-    #return jsonify(T)
+    return jsonify(T)
 
 
 @MetricInsight_blueprint.route('/start', methods=['POST'])
@@ -38,7 +38,7 @@ def start():
     freq_value = data_received.get('FreqInput', 10)
 
     interval_checkbox_value = data_received.get('intervalCheckbox', False)
-    interval_value = data_received.get('IntervalInput', float('inf'))
+    interval_value = data_received.get('IntervalInput', -1)
 
     plot_checkbox_value = data_received.get('plotCheckbox', False)
 
@@ -109,22 +109,20 @@ def MetricInsight(configuration):
         treads[t].start()
 
 
-def conso(shared_queues):
+def conso(shared_queue) :
     L = []
-    queues_copy = {}
 
-    # Copy des queues
-    for item, key in shared_queues:
-        with item.mutex:
-            queues_copy[key] = deepcopy(item.queue)
+    # Copie de la queue
+    with shared_queue.mutex:
+        queue_copy = deepcopy(shared_queue.queue)
 
     # Vidange de la copie
     for item in queue_copy:
         print(f"Consommé: {item}")
         shared_queue.get()
 
-        # Vérifier si c'est le signal de fin
-        if item == "STOP":
+    # Vérifier si c'est le signal de fin
+        if item == "END":
             print("Le producteur a terminé. Fin du traitement.")
             return False
         L.append(item)
