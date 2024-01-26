@@ -4,7 +4,7 @@ import threading
 import queue
 from copy import deepcopy
 
-from GPU.utilisation import web_utilisation_gpu
+from GPU import web_utilisation_gpu
 
 global shared_queues
 
