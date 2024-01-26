@@ -1,4 +1,4 @@
-""" @package shared
+""" @package Shared
 Documentation for result module.
 
 More details.

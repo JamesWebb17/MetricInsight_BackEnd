@@ -7,11 +7,10 @@ Function for calculating the CPU usage of a process.
 
 import time
 
-from Read_File.PID import Stat as ProcStat
-from Read_File.stat import Stat
-from Read_File import Uptime
-from shared import Result, flags
-
+from Read_File.PID.stat import Stat as ProcStat
+from Read_File.uptime import Uptime
+from Shared import flags
+from Shared.result import Result
 
 def calcul_utilisation_cpu(stat, uptime, clock_ticks_per_second):
     """

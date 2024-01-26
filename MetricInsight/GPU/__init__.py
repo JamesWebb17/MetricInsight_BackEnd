@@ -1,1 +1,2 @@
-from .utilisation import web_utilisation_gpu
+# Import all the modules in the package
+from . import utilisation

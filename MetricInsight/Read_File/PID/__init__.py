@@ -1,2 +1,4 @@
-from Read_File.PID.statm import Statm
-from Read_File.PID.stat import Stat
+# Import all the modules in the package
+from . import gpu
+from . import gpu
+from . import statm

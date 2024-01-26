@@ -7,13 +7,15 @@ More details.
 
 import threading
 
-import shared
-from CPU import utilisation_cpu, utilisation_cpus
+from CPU.utilisation import utilisation_cpu, utilisation_cpus
 from GPU.utilisation import utilisation_gpu
-from Memory import utilisation_mem, utilisation_mems
+from Memory.utilisation import utilisation_mem, utilisation_mems
 import Arguments
-from Power import utilisation_power
-from shared import flags, Result
+from Power.utilisation import utilisation_power
+
+from Shared import flags
+from Shared.result import Result
+from Shared.result import read_data, save_data, plot_data, smooth_data
 
 
 def main():
@@ -125,16 +127,16 @@ def main():
         if args.Smoothing > 1:
             if flags.VERBOSE_MODE_FLAG:
                 print(f"Smoothing data with {args.Smoothing} points...")
-                shared.plot_data(shared.smooth_data(result, args.Smoothing))
+                plot_data(smooth_data(result, args.Smoothing))
             else:
                 print("Plotting data...")
         else:
-            shared.plot_data(result)
+            plot_data(result)
 
     if args.Save:
         if flags.VERBOSE_MODE_FLAG:
             print("Saving data...")
-        shared.save_data(args.Save, result)
+        save_data(args.Save, result)
 
     if args.Read is not None:
         if flags.VERBOSE_MODE_FLAG:
@@ -142,12 +144,12 @@ def main():
         if args.Smoothing > 1:
             if flags.VERBOSE_MODE_FLAG:
                 print(f"Smoothing data with {args.Smoothing} points...")
-                shared.plot_data(
-                    shared.smooth_data([shared.read_data(args.Read, Result("test", "test", []))], args.Smoothing))
+                plot_data(
+                    smooth_data([read_data(args.Read, Result("test", "test", []))], args.Smoothing))
             else:
                 print("Plotting data...")
         else:
-            shared.plot_data([shared.read_data(args.Read, Result("test", "test", []))])
+            plot_data([read_data(args.Read, Result("test", "test", []))])
 
     return 0
 

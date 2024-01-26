@@ -1,4 +1,4 @@
-""" @package shared
+""" @package Shared
 Documentation for config module.
 """
 

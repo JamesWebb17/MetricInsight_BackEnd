@@ -1,1 +1,2 @@
-from .usage import usage
+# Import all the modules in the package
+from . import usage

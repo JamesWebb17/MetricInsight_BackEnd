@@ -1,2 +1,2 @@
-from .utilisation import utilisation_mem
-from .utilisation import utilisation_mems
+# Import all the modules in the package
+from . import utilisation

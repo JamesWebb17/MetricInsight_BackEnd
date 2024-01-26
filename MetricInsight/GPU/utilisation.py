@@ -7,9 +7,9 @@ Function for calculating the GPU charge.
 
 import time
 
-import shared.flags
 from Read_File.PID.gpu import GPU
-from shared import Result, flags
+from Shared import flags
+from Shared.result import Result
 
 
 def utilisation_gpu(frequency, interval, result):
@@ -29,7 +29,7 @@ def utilisation_gpu(frequency, interval, result):
     list_gpu = []
     list_temps = []
 
-    while process_info.read() != -1 and now - start < interval and shared.flags.THREAD_CPU_END_FLAG is False and shared.flags.THREAD_MEM_END_FLAG is False:
+    while process_info.read() != -1 and now - start < interval and flags.THREAD_CPU_END_FLAG is False and flags.THREAD_MEM_END_FLAG is False:
         now = time.clock_gettime(time.CLOCK_REALTIME)
 
         list_gpu.append(process_info.load / 10)
@@ -61,7 +61,7 @@ def web_utilisation_gpu(shared_queue, configuration):
     list_gpu = []
     list_temps = []
 
-    while process_info.read() != -1 and now - start < interval and shared.flags.THREAD_CPU_END_FLAG is False and shared.flags.THREAD_MEM_END_FLAG is False:
+    while process_info.read() != -1 and now - start < interval and flags.THREAD_CPU_END_FLAG is False and flags.THREAD_MEM_END_FLAG is False:
         now = time.clock_gettime(time.CLOCK_REALTIME)
 
         list_gpu.append(process_info.load / 10)
