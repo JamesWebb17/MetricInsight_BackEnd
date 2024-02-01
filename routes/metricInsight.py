@@ -1,4 +1,7 @@
-from flask import Blueprint, jsonify, request
+import json
+import time
+
+from flask import Blueprint, jsonify, request, Response
 
 import threading
 import queue
@@ -10,16 +13,21 @@ global shared_queues
 
 MetricInsight_blueprint = Blueprint('MetricInsight', __name__, url_prefix='/MetricInsight')
 
-
 @MetricInsight_blueprint.route('/get_data', methods=['GET'])
-def test():
-    print("Debut du traitement...")
-    T = conso(shared_queues['GPU'])
-    if not T:
-        print("Fin du traitement.")
-        return jsonify("STOP")
-    #print("Données envoyées : ", T)
-    return jsonify(T)
+def stream():
+    def get_data():
+        time.sleep(1)
+        while True:
+            data, flag = conso(shared_queues['GPU'])
+            time.sleep(1)
+            if flag:
+                yield f'data: {json.dumps({"data": data})}\n\n'
+            else:
+                yield f'data: {json.dumps({"data": data})}\n\n'
+                yield f'data: {json.dumps({"end": -1})}\n\n'
+                break
+
+    return Response(get_data(), mimetype='text/event-stream')
 
 
 @MetricInsight_blueprint.route('/start', methods=['POST'])
@@ -109,23 +117,21 @@ def MetricInsight(configuration):
         treads[t].start()
 
 
-def conso(shared_queue) :
+def conso(queueP):
     L = []
 
-    # Copie de la queue
-    with shared_queue.mutex:
-        queue_copy = deepcopy(shared_queue.queue)
+    # Copie & vide la queue
+    with queueP.mutex:
+        queue_copy = deepcopy(queueP.queue)
 
     # Vidange de la copie
     for item in queue_copy:
-        print(f"Consommé: {item}")
-        shared_queue.get()
+        queueP.get()
 
-    # Vérifier si c'est le signal de fin
+        # Vérifier si c'est le signal de fin
         if item == "END":
             print("Le producteur a terminé. Fin du traitement.")
-            return False
+            return L, False
         L.append(item)
 
-    print("Fin du traitement.")
-    return L
+    return L, True
