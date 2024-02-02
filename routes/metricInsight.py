@@ -9,6 +9,7 @@ from copy import deepcopy
 
 from MetricInsight.GPU.utilisation import web_utilisation_gpu
 from MetricInsight.Memory.utilisation import web_utilisation_all_memory, web_utilisation_memory
+from Power.utilisation import web_tilisation_power
 from MetricInsight.Shared import flags
 
 global shared_queues
@@ -39,6 +40,10 @@ def get_data_Memory():
 @MetricInsight_blueprint.route('/get_data/Memory_PID', methods=['GET'])
 def get_data_Memory_PID():
     return Response(get_data('MEM'), mimetype='text/event-stream')
+
+@MetricInsight_blueprint.route('/get_data/Power', methods=['GET'])
+def get_data_Power():
+    return Response(get_data('POWER'), mimetype='text/event-stream')
 
 
 @MetricInsight_blueprint.route('/start', methods=['POST'])
@@ -111,7 +116,7 @@ def MetricInsight(configuration):
 
     if configuration['powerCheckbox']:
         shared_queues['POWER'] = queue.Queue(MAX_QUEUE_SIZE)
-        threads['thread_POWER'] = threading.Thread(target=conso, args=(shared_queues['POWER'], configuration))
+        threads['thread_POWER'] = threading.Thread(target=web_tilisation_power, args=(shared_queues['POWER'], configuration))
 
     if configuration['pidCheckbox']:
         if configuration['cpuCheckbox']:
