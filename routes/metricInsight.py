@@ -8,26 +8,32 @@ import queue
 from copy import deepcopy
 
 from MetricInsight.GPU.utilisation import web_utilisation_gpu
+from MetricInsight.Memory.utilisation import web_utilisation_all_memory
 
 global shared_queues
 
 MetricInsight_blueprint = Blueprint('MetricInsight', __name__, url_prefix='/MetricInsight')
 
-@MetricInsight_blueprint.route('/get_data', methods=['GET'])
-def stream():
-    def get_data():
-        time.sleep(1)
-        while True:
-            data, flag = conso(shared_queues['GPU'])
-            time.sleep(1)
-            if flag:
-                yield f'data: {json.dumps({"data": data})}\n\n'
-            else:
-                yield f'data: {json.dumps({"data": data})}\n\n'
-                yield f'data: {json.dumps({"end": -1})}\n\n'
-                break
 
-    return Response(get_data(), mimetype='text/event-stream')
+def get_data(name):
+    time.sleep(1)
+    while True:
+        data, flag = conso(shared_queues[name])
+        time.sleep(1)
+        if flag:
+            yield f'data: {json.dumps({"data": data})}\n\n'
+        else:
+            yield f'data: {json.dumps({"data": data})}\n\n'
+            yield f'data: {json.dumps({"end": -1})}\n\n'
+            break
+
+@MetricInsight_blueprint.route('/get_data/GPU', methods=['GET'])
+def get_data_GPU():
+    return Response(get_data('GPU'), mimetype='text/event-stream')
+
+@MetricInsight_blueprint.route('/get_data/Memory', methods=['GET'])
+def get_data_Memory():
+    return Response(get_data('MEM'), mimetype='text/event-stream')
 
 
 @MetricInsight_blueprint.route('/start', methods=['POST'])
@@ -48,13 +54,8 @@ def start():
     interval_checkbox_value = data_received.get('intervalCheckbox', False)
     interval_value = data_received.get('IntervalInput', -1)
 
-    plot_checkbox_value = data_received.get('plotCheckbox', False)
-
     smoothing_checkbox_value = data_received.get('smoothingCheckbox', False)
     smoothing_value = data_received.get('SmoothingInput', 1)
-
-    save_checkbox_value = data_received.get('saveCheckbox', False)
-    save_value = data_received.get('SaveInput', "")
 
     configuration = {
         'pidCheckbox': pid_checkbox_value,
@@ -67,11 +68,8 @@ def start():
         'FreqInput': freq_value,
         'intervalCheckbox': interval_checkbox_value,
         'IntervalInput': interval_value,
-        'plotCheckbox': plot_checkbox_value,
         'smoothingCheckbox': smoothing_checkbox_value,
         'SmoothingInput': smoothing_value,
-        'saveCheckbox': save_checkbox_value,
-        'SaveInput': save_value
     }
 
     # Check if the configuration is valid
@@ -106,7 +104,7 @@ def MetricInsight(configuration):
 
     if configuration['memoryCheckbox']:
         shared_queues['MEM'] = queue.Queue(MAX_QUEUE_SIZE)
-        treads['thread_MEM'] = threading.Thread(target=conso, args=(shared_queues['MEM'], configuration))
+        treads['thread_MEM'] = threading.Thread(target=web_utilisation_all_memory, args=(shared_queues['MEM'], configuration))
 
     if configuration['powerCheckbox']:
         shared_queues['POWER'] = queue.Queue(MAX_QUEUE_SIZE)

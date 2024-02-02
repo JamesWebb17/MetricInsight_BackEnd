@@ -41,8 +41,8 @@ class GPU:
         """
 
         try:
-            with open("/sys/devices/gpu.0/load", "r") as file:
-            #with open("./MetricInsight/Files/gpu.0/load", "r") as file:
+            #with open("/sys/devices/gpu.0/load", "r") as file:
+            with open("./MetricInsight/Files/gpu.0/load", "r") as file:
 
                 self.load = int(file.readline())
         except FileNotFoundError:
