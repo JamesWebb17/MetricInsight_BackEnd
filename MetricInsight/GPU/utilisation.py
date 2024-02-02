@@ -58,7 +58,7 @@ def web_utilisation_gpu(shared_queue, configuration):
     interval = int(configuration['IntervalInput'])
     frequency = int(configuration['FreqInput'])
 
-    while process_info.read() != -1 and now - start < interval and flags.THREAD_CPU_END_FLAG is False and flags.THREAD_MEM_END_FLAG is False:
+    while process_info.read() != -1 and now - start < interval and not flags.END_FLAG:
         now = time.clock_gettime(time.CLOCK_REALTIME)
         shared_queue.put([now - start, process_info.load / 10])
 

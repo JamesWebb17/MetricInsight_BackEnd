@@ -9,6 +9,7 @@ from copy import deepcopy
 
 from MetricInsight.GPU.utilisation import web_utilisation_gpu
 from MetricInsight.Memory.utilisation import web_utilisation_all_memory
+from MetricInsight.Shared import flags
 
 global shared_queues
 
@@ -38,6 +39,7 @@ def get_data_Memory():
 
 @MetricInsight_blueprint.route('/start', methods=['POST'])
 def start():
+    flags.END_FLAG = False
     data_received = request.get_json()
 
     pid_checkbox_value = data_received.get('pidCheckbox', False)
@@ -85,34 +87,39 @@ def start():
 
     return jsonify(response_data)
 
+@MetricInsight_blueprint.route('/stop', methods=['POST'])
+def stop():
+    print('Arrêt de MetricInsight...')
+    flags.END_FLAG = True
+    return jsonify({'acknowledgement': True})
 
 def MetricInsight(configuration):
     MAX_QUEUE_SIZE = int(configuration['FreqInput']) * 10
 
     global shared_queues
-    shared_queues = {}
 
-    treads = {}
+    shared_queues = {}
+    threads = {}
 
     if configuration['cpuCheckbox']:
         shared_queues['CPU'] = queue.Queue(MAX_QUEUE_SIZE)
-        treads['thread_CPU'] = threading.Thread(target=conso, args=(shared_queues['CPU'], configuration))
+        threads['thread_CPU'] = threading.Thread(target=conso, args=(shared_queues['CPU'], configuration))
 
     if configuration['gpuCheckbox']:
         shared_queues['GPU'] = queue.Queue(MAX_QUEUE_SIZE)
-        treads['thread_GPU'] = threading.Thread(target=web_utilisation_gpu, args=(shared_queues['GPU'], configuration))
+        threads['thread_GPU'] = threading.Thread(target=web_utilisation_gpu, args=(shared_queues['GPU'], configuration))
 
     if configuration['memoryCheckbox']:
         shared_queues['MEM'] = queue.Queue(MAX_QUEUE_SIZE)
-        treads['thread_MEM'] = threading.Thread(target=web_utilisation_all_memory, args=(shared_queues['MEM'], configuration))
+        threads['thread_MEM'] = threading.Thread(target=web_utilisation_all_memory, args=(shared_queues['MEM'], configuration))
 
     if configuration['powerCheckbox']:
         shared_queues['POWER'] = queue.Queue(MAX_QUEUE_SIZE)
-        treads['thread_POWER'] = threading.Thread(target=conso, args=(shared_queues['POWER'], configuration))
+        threads['thread_POWER'] = threading.Thread(target=conso, args=(shared_queues['POWER'], configuration))
 
     # Start threads
-    for t in treads:
-        treads[t].start()
+    for t in threads:
+        threads[t].start()
 
 
 def conso(queueP):

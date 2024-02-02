@@ -26,3 +26,9 @@ THREAD_POWER_END_FLAG = False
 flag that indicates if the thread for the GPU is running or not.
 """
 THREAD_GPU_END_FLAG = False
+
+"""
+flag that indicates to all threads to stop.
+"""
+END_FLAG = False
+
