@@ -9,7 +9,7 @@ from copy import deepcopy
 
 from MetricInsight.GPU.utilisation import web_utilisation_gpu
 from MetricInsight.Memory.utilisation import web_utilisation_all_memory, web_utilisation_memory
-from Power.utilisation import web_tilisation_power
+from MetricInsight.Power.utilisation import web_tilisation_power
 from MetricInsight.Shared import flags
 
 global shared_queues
