@@ -37,7 +37,7 @@ def utilisation_mem(pid, frequency, interval, result):
         list_mem.append(process_info.size)
         list_temps.append(now - start)
 
-        time.sleep(1/frequency)
+        time.sleep(1 / frequency)
 
     result.append(Result("MEM", "Utilisation mémoire (kB)", [list_temps, list_mem]))
     flags.THREAD_MEM_END_FLAG = True
@@ -67,11 +67,42 @@ def utilisation_mems(frequency, interval, result):
         list_mem.append(process_info.mem_total - process_info.mem_free)
         list_temps.append(now - start)
 
-        time.sleep(1/frequency)
+        time.sleep(1 / frequency)
 
     result.append(Result("MEM", "Utilisation mémoire (kB)", [list_temps, list_mem]))
     flags.THREAD_MEM_END_FLAG = True
     return 0
+
+
+def web_utilisation_memory(shared_queue, configuration):
+    """
+       Find the Memory usage without a focus on a process in file /proc/meminfo and /proc/uptime.
+       :param shared_queue: queue for sending the result to the main thread
+       :param configuration: configuration of the program
+       :return: status of the function
+   """
+
+    interval = int(configuration['IntervalInput'])
+    frequency = int(configuration['FreqInput'])
+    pid = int(configuration['pidInput'])
+
+    process_info = Statm(pid)
+
+    start = time.clock_gettime(time.CLOCK_REALTIME)
+    now = 0
+
+    while process_info.read_proc_statm() != -1 and now - start < interval and not flags.END_FLAG:
+        now = time.clock_gettime(time.CLOCK_REALTIME)
+
+        shared_queue.put([now - start, process_info.size])
+
+        time.sleep(1 / frequency)
+
+    shared_queue.put("END")
+    print("Fin du thread Memory.")
+    flags.THREAD_MEM_END_FLAG = True
+    return 0
+
 
 def web_utilisation_all_memory(shared_queue, configuration):
     """

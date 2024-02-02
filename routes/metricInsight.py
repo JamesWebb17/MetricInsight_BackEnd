@@ -8,7 +8,7 @@ import queue
 from copy import deepcopy
 
 from MetricInsight.GPU.utilisation import web_utilisation_gpu
-from MetricInsight.Memory.utilisation import web_utilisation_all_memory
+from MetricInsight.Memory.utilisation import web_utilisation_all_memory, web_utilisation_memory
 from MetricInsight.Shared import flags
 
 global shared_queues
@@ -34,6 +34,10 @@ def get_data_GPU():
 
 @MetricInsight_blueprint.route('/get_data/Memory', methods=['GET'])
 def get_data_Memory():
+    return Response(get_data('MEM'), mimetype='text/event-stream')
+
+@MetricInsight_blueprint.route('/get_data/Memory_PID', methods=['GET'])
+def get_data_Memory_PID():
     return Response(get_data('MEM'), mimetype='text/event-stream')
 
 
@@ -101,21 +105,29 @@ def MetricInsight(configuration):
     shared_queues = {}
     threads = {}
 
-    if configuration['cpuCheckbox']:
-        shared_queues['CPU'] = queue.Queue(MAX_QUEUE_SIZE)
-        threads['thread_CPU'] = threading.Thread(target=conso, args=(shared_queues['CPU'], configuration))
-
     if configuration['gpuCheckbox']:
         shared_queues['GPU'] = queue.Queue(MAX_QUEUE_SIZE)
         threads['thread_GPU'] = threading.Thread(target=web_utilisation_gpu, args=(shared_queues['GPU'], configuration))
 
-    if configuration['memoryCheckbox']:
-        shared_queues['MEM'] = queue.Queue(MAX_QUEUE_SIZE)
-        threads['thread_MEM'] = threading.Thread(target=web_utilisation_all_memory, args=(shared_queues['MEM'], configuration))
-
     if configuration['powerCheckbox']:
         shared_queues['POWER'] = queue.Queue(MAX_QUEUE_SIZE)
         threads['thread_POWER'] = threading.Thread(target=conso, args=(shared_queues['POWER'], configuration))
+
+    if configuration['pidCheckbox']:
+        if configuration['cpuCheckbox']:
+            shared_queues['CPU'] = queue.Queue(MAX_QUEUE_SIZE)
+            threads['thread_CPU'] = threading.Thread(target=conso, args=(shared_queues['CPU'], configuration))
+        if configuration['memoryCheckbox']:
+            shared_queues['MEM'] = queue.Queue(MAX_QUEUE_SIZE)
+            threads['thread_MEM'] = threading.Thread(target=web_utilisation_memory, args=(shared_queues['MEM'], configuration))
+    else :
+        if configuration['cpuCheckbox']:
+            shared_queues['CPU'] = queue.Queue(MAX_QUEUE_SIZE)
+            threads['thread_CPU'] = threading.Thread(target=conso, args=(shared_queues['CPU'], configuration))
+        if configuration['memoryCheckbox']:
+            shared_queues['MEM'] = queue.Queue(MAX_QUEUE_SIZE)
+            threads['thread_MEM'] = threading.Thread(target=web_utilisation_all_memory, args=(shared_queues['MEM'], configuration))
+
 
     # Start threads
     for t in threads:
