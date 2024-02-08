@@ -135,11 +135,12 @@ def web_utilisation_cpus(shared_queue, configuration):
             temps_cpu_t[i] = process_info.cpu_stats.get(f"cpu{i - 1}").utime + process_info.cpu_stats.get(f"cpu{i - 1}").stime
 
         for i in range(0, len(temps_cpu)):
-            list_charge_cpu.append(calcul_charge_cpu([temps_cpu[i], temps_cpu_t[i]], [temps_uptime, temps_uptime_t]))
+            t = calcul_charge_cpu([temps_cpu[i], temps_cpu_t[i]], [temps_uptime, temps_uptime_t])
+            list_charge_cpu.append(t[-1])
 
-        print([now - start]+ list_charge_cpu[-1])
+        print([now - start]+ list_charge_cpu)
 
-        shared_queue.put(shared_queue.put([now - start] + list_charge_cpu[-1]))
+        shared_queue.put(shared_queue.put([now - start] + list_charge_cpu))
 
         temps_cpu = temps_cpu_t
         temps_uptime = temps_uptime_t
