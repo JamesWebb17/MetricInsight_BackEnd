@@ -138,7 +138,7 @@ def web_utilisation_cpus(shared_queue, configuration):
             t = calcul_charge_cpu([temps_cpu[i], temps_cpu_t[i]], [temps_uptime, temps_uptime_t])
             list_charge_cpu.append(t[-1])
 
-        print([now - start]+ list_charge_cpu)
+        print(len([now - start] + list_charge_cpu))
         print()
         print()
 
