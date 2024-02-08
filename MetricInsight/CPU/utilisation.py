@@ -14,27 +14,6 @@ from MetricInsight.Shared import flags
 from MetricInsight.Shared.result import Result
 
 
-def calcul_utilisation_cpu(stat, uptime, clock_ticks_per_second):
-    """
-    Calculate the CPU usage of a process.
-    :param stat: Object Stat read from /proc/[pid]/stat
-    :param uptime: Object Uptime read from /proc/uptime
-    :param clock_ticks_per_second: Number of clock ticks per second
-    :return: CPU usage of a process (in %)
-    """
-
-    process_utime_sec = stat.utime / clock_ticks_per_second
-    process_stime_sec = stat.stime / clock_ticks_per_second
-    process_start_sec = stat.starttime / clock_ticks_per_second
-
-    system_uptime_sec = uptime.total_operational_time
-
-    process_elapsed_sec = system_uptime_sec - process_start_sec
-    process_cpu_usage = 100 * ((process_utime_sec + process_stime_sec) / process_elapsed_sec)
-
-    return process_cpu_usage
-
-
 def utilisation_cpu(pid, frequency, interval, result):
     """
     Find the CPU usage of a process in files /proc/[pid]/stat and /proc/uptime.
@@ -64,6 +43,47 @@ def utilisation_cpu(pid, frequency, interval, result):
 
     list_charge_cpu = calcul_charge_cpu(list_cpu, list_uptime)
     result.append(Result("CPU", "Utilisation du cpu (%)", [list_temps[:-1], list_charge_cpu]))
+    flags.THREAD_CPU_END_FLAG = True
+    return 0
+
+
+def web_utilisation_cpu(shared_queue, configuration):
+    """
+    Find the Memory usage of a process in files /proc/[pid]/statm and /proc/uptime.
+    :param shared_queue: queue for sending the result to the main thread
+    :param configuration: configuration of the program
+    :return: status of the function
+    """
+
+    interval = int(configuration['IntervalInput'])
+    frequency = int(configuration['FreqInput'])
+    pid = int(configuration['pidInput'])
+
+    process_info = ProcStat(pid)
+    uptime_info = Uptime()
+
+    start = time.clock_gettime(time.CLOCK_REALTIME)
+    now = 0
+
+    temps_cpu = 0
+    temps_uptime = 0
+
+    while process_info.read_proc_stat() != -1 and uptime_info.read_proc_uptime() != -1 and now - start < interval:
+        now = time.clock_gettime(time.CLOCK_REALTIME)
+
+        temps_cpu_t = process_info.utime + process_info.stime
+        temps_uptime_t = uptime_info.total_operational_time
+
+        time.sleep(1 / frequency)
+
+        list_charge_cpu = calcul_charge_cpu([temps_cpu, temps_cpu_t], [temps_uptime, temps_uptime_t])
+        shared_queue.put([now - start, list_charge_cpu[-1]])
+
+        temps_cpu = temps_cpu_t
+        temps_uptime = temps_uptime_t + 1
+
+    shared_queue.put("END")
+    print("Fin du thread CPU.")
     flags.THREAD_CPU_END_FLAG = True
     return 0
 

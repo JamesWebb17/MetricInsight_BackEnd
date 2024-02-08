@@ -106,7 +106,12 @@ def web_tilisation_power(shared_queue, configuration):
         shared_queue.put(
             [now - start, conso_vdd_gpu_soc, conso_vdd_cpu_cv, conso_vin_sys_5_v0, conso_vddq_vdd2_1_v8_ao])
 
+    for i in range(100):
+        now = time.clock_gettime(time.CLOCK_REALTIME)
+        shared_queue.put([now - start, 1, 2, 3, 4])
+        time.sleep(1 / frequency)
+
     shared_queue.put("END")
-    print("Fin du thread GPU.")
+    print("Fin du thread POWER.")
     flags.THREAD_POWER_END_FLAG = True
     return 0
