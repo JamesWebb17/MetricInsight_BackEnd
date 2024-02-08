@@ -22,7 +22,6 @@ def get_data(name):
     time.sleep(1)
     while True:
         data, flag = conso(shared_queues[name])
-        print(data)
         time.sleep(1)
         if flag:
             yield f'data: {json.dumps({"data": data})}\n\n'
@@ -169,6 +168,10 @@ def conso(queueP):
     # Vidange de la copie
     for item in queue_copy:
         queueP.get()
+
+        print(item)
+        print()
+        print()
 
         # Vérifier si c'est le signal de fin
         if item == "END":
