@@ -82,7 +82,7 @@ def web_utilisation_cpu(shared_queue, configuration):
         shared_queue.put([now - start, list_charge_cpu[-1]])
 
         temps_cpu = temps_cpu_t
-        temps_uptime = temps_uptime_t + 1
+        temps_uptime = temps_uptime_t
 
     shared_queue.put("END")
     print("Fin du thread CPU.")
