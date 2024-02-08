@@ -22,6 +22,7 @@ def get_data(name):
     time.sleep(1)
     while True:
         data, flag = conso(shared_queues[name])
+        print(data)
         time.sleep(1)
         if flag:
             yield f'data: {json.dumps({"data": data})}\n\n'
