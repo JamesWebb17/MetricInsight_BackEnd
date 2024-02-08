@@ -55,6 +55,8 @@ def web_utilisation_cpu(shared_queue, configuration):
     :return: status of the function
     """
 
+    flags.THREAD_CPU_END_FLAG = False
+
     interval = int(configuration['IntervalInput'])
     frequency = int(configuration['FreqInput'])
     pid = int(configuration['pidInput'])

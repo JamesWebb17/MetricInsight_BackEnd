@@ -82,6 +82,8 @@ def web_utilisation_memory(shared_queue, configuration):
        :return: status of the function
    """
 
+    flags.THREAD_MEM_END_FLAG = False
+
     interval = int(configuration['IntervalInput'])
     frequency = int(configuration['FreqInput'])
     pid = int(configuration['pidInput'])
@@ -111,6 +113,8 @@ def web_utilisation_all_memory(shared_queue, configuration):
        :param configuration: configuration of the program
        :return: status of the function
    """
+
+    flags.THREAD_MEM_END_FLAG = False
 
     process_info = MemInfo()
 

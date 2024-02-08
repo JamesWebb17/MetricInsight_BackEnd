@@ -75,6 +75,8 @@ def web_tilisation_power(shared_queue, configuration):
     :return: status of the function
     """
 
+    flags.THREAD_POWER_END_FLAG = False
+
     vdd_gpu_soc = Hwmon()
     vdd_gpu_soc.__set_name__("3", "1")
     vdd_cpu_cv = Hwmon()

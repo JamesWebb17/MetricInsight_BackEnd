@@ -50,6 +50,8 @@ def web_utilisation_gpu(shared_queue, configuration):
     :return: status of the function
     """
 
+    flags.THREAD_GPU_END_FLAG = False
+
     start = time.clock_gettime(time.CLOCK_REALTIME)
     now = 0
 
