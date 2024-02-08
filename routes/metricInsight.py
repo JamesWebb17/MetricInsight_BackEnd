@@ -169,10 +169,6 @@ def conso(queueP):
     for item in queue_copy:
         queueP.get()
 
-        print(item)
-        print()
-        print()
-
         # Vérifier si c'est le signal de fin
         if item == "END":
             print("Le producteur a terminé. Fin du traitement.")
