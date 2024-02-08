@@ -144,7 +144,9 @@ def web_utilisation_cpus(shared_queue, configuration):
 
         #shared_queue.put(shared_queue.put([now - start] + list_charge_cpu))
 
-        temps_cpu = temps_cpu_t
+        temps_cpu = list(temps_cpu_t)
+        temps_cpu_t = [0 for i in range(13)]
+
         temps_uptime = temps_uptime_t
 
         time.sleep(1 / frequency)
