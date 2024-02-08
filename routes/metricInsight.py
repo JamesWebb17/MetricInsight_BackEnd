@@ -10,7 +10,7 @@ from copy import deepcopy
 from MetricInsight.GPU.utilisation import web_utilisation_gpu
 from MetricInsight.Memory.utilisation import web_utilisation_all_memory, web_utilisation_memory
 from MetricInsight.Power.utilisation import web_tilisation_power
-from MetricInsight.CPU.utilisation import web_utilisation_cpu
+from MetricInsight.CPU.utilisation import web_utilisation_cpu, web_utilisation_cpus
 from MetricInsight.Shared import flags
 
 global shared_queues
@@ -48,6 +48,10 @@ def get_data_Memory_PID():
 
 @MetricInsight_blueprint.route('/get_data/CPU_PID', methods=['GET'])
 def get_data_CPU_PID():
+    return Response(get_data('CPU'), mimetype='text/event-stream')
+
+@MetricInsight_blueprint.route('/get_data/CPU', methods=['GET'])
+def get_data_CPU():
     return Response(get_data('CPU'), mimetype='text/event-stream')
 
 
@@ -143,7 +147,7 @@ def MetricInsight(configuration):
     else:
         if configuration['cpuCheckbox']:
             shared_queues['CPU'] = queue.Queue(MAX_QUEUE_SIZE)
-            threads['thread_CPU'] = threading.Thread(target=conso, args=(shared_queues['CPU'], configuration))
+            threads['thread_CPU'] = threading.Thread(target=web_utilisation_cpus, args=(shared_queues['CPU'], configuration))
         if configuration['memoryCheckbox']:
             shared_queues['MEM'] = queue.Queue(MAX_QUEUE_SIZE)
             threads['thread_MEM'] = threading.Thread(target=web_utilisation_all_memory,

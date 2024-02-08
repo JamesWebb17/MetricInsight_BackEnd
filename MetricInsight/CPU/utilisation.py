@@ -100,23 +100,54 @@ def calcul_charge_cpu(list_utime, list_uptime):
 
     return list_charge_cpu
 
-
-def calcul_utilisation_cpu_systeme(cpu, clock_ticks_per_second):
+def web_utilisation_cpus(shared_queue, configuration):
     """
-    Calculate the CPU usage for each heart.
-    :param cpu:
-    :param clock_ticks_per_second:
-    :return:
+    Find the Memory usage of a process in files /proc/[pid]/statm and /proc/uptime.
+    :param shared_queue: queue for sending the result to the main thread
+    :param configuration: configuration of the program
+    :return: status of the function
     """
 
-    utime_sec = cpu.utime / clock_ticks_per_second
-    stime_sec = cpu.stime / clock_ticks_per_second
-    idle_sec = cpu.idle[0] / clock_ticks_per_second
+    flags.THREAD_CPU_END_FLAG = False
 
-    cpu_usage = 100 * ((utime_sec + stime_sec) / (utime_sec + stime_sec + idle_sec))
+    interval = int(configuration['IntervalInput'])
+    frequency = int(configuration['FreqInput'])
 
-    return cpu_usage
+    process_info = Stat()
+    uptime_info = Uptime()
 
+    start = time.clock_gettime(time.CLOCK_REALTIME)
+    now = 0
+
+    temps_cpu = [0 for i in range(0, 13)]
+    temps_cpu_t = [0 for i in range(0, 13)]
+    list_charge_cpu = [0 for i in range(0, 13)]
+
+    temps_uptime = 0
+
+    while process_info.read_stat() != -1 and uptime_info.read_proc_uptime() != -1 and now - start < interval:
+        now = time.clock_gettime(time.CLOCK_REALTIME)
+
+        temps_uptime_t = uptime_info.total_operational_time
+        temps_cpu_t[0] = process_info.cpu_stats.get(f"cpu").utime + process_info.cpu_stats.get(f"cpu").stime
+
+        for i in range(1, len(temps_cpu)):
+            temps_cpu_t[i] = process_info.cpu_stats.get(f"cpu{i - 1}").utime + process_info.cpu_stats.get(f"cpu{i - 1}").stime
+
+        for i in range(0, len(temps_cpu)):
+            list_charge_cpu[i] = calcul_charge_cpu([temps_cpu[i], temps_cpu_t[i]], [temps_uptime, temps_uptime_t])
+
+        shared_queue.put(shared_queue.put([now - start, list_charge_cpu[-1]]))
+
+        temps_cpu = temps_cpu_t
+        temps_uptime = temps_uptime_t
+
+        time.sleep(1 / frequency)
+
+    shared_queue.put("END")
+    print("Fin du thread CPU.")
+    flags.THREAD_CPU_END_FLAG = True
+    return 0
 
 def utilisation_cpus(frequency, interval, result):
     """
