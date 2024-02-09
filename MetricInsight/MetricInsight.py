@@ -157,15 +157,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-import queue
-import time
-from copy import deepcopy
-def produire(queue):
-    for i in range(100):
-        item = f"Produit {i}"
-        queue.put(item)
-        print(f"Produit: {item}")
-        time.sleep(0.1)
-    queue.put("END")
-    return 0
-

@@ -6,24 +6,20 @@ from dotenv import load_dotenv
 
 from routes import contact, metricInsight, api
 
+# Load the environment variables
 load_dotenv()
 
+# Create the Flask app
 app = Flask(__name__)
 
-
+# Enable CORS
 CORS(app)
 
+# Register the blueprints
 app.register_blueprint(contact.contact_blueprint, url_prefix='/contact')
 app.register_blueprint(metricInsight.MetricInsight_blueprint, url_prefix='/MetricInsight')
 app.register_blueprint(api.api_blueprint, url_prefix='/api')
 
-
-
+# Run the app
 if __name__ == '__main__':
-
-    host = os.getenv("SERVER_IP", "127.0.0.1")
-    port = int(os.getenv("PORT", 8000))
-
-    print(f"Server running on {host}:{port}")
-
-    app.run(host="148.60.220.43", port=port)
+    app.run()

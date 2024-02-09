@@ -19,6 +19,11 @@ MetricInsight_blueprint = Blueprint('MetricInsight', __name__, url_prefix='/Metr
 
 
 def get_data(name):
+    """
+    Send data to the client
+    :param name: name of the queue
+    :return:
+    """
     time.sleep(1)
     while True:
         data, flag = conso(shared_queues[name])
@@ -33,38 +38,68 @@ def get_data(name):
 
 @MetricInsight_blueprint.route('/get_data/GPU', methods=['GET'])
 def get_data_GPU():
+    """
+    Sending GPU data to the client
+    :return: Data for the client
+    """
     return Response(get_data('GPU'), mimetype='text/event-stream')
 
 
 @MetricInsight_blueprint.route('/get_data/Memory', methods=['GET'])
 def get_data_Memory():
+    """
+    Sending Memory data to the client
+    :return: Data for the client
+    """
     return Response(get_data('MEM'), mimetype='text/event-stream')
 
 
 @MetricInsight_blueprint.route('/get_data/Memory_PID', methods=['GET'])
 def get_data_Memory_PID():
+    """
+    Sending Memory_PID data to the client
+    :return: Data for the client
+    """
     return Response(get_data('MEM'), mimetype='text/event-stream')
 
 
 @MetricInsight_blueprint.route('/get_data/CPU_PID', methods=['GET'])
 def get_data_CPU_PID():
+    """
+    Sending CPU_PID data to the client
+    :return: Data for the client
+    """
     return Response(get_data('CPU'), mimetype='text/event-stream')
 
 @MetricInsight_blueprint.route('/get_data/CPU', methods=['GET'])
 def get_data_CPU():
+    """
+    Sending CPU data to the client
+    :return: Data for the client
+    """
     return Response(get_data('CPU'), mimetype='text/event-stream')
 
 
 @MetricInsight_blueprint.route('/get_data/Power', methods=['GET'])
 def get_data_Power():
+    """
+    Sending Power data to the client
+    :return: Data for the client
+    """
     return Response(get_data('POWER'), mimetype='text/event-stream')
 
 
 @MetricInsight_blueprint.route('/start', methods=['POST'])
 def start():
+    """
+    Start the MetricInsight program
+    :return: Response to the client (acknowledgement : True or False)
+    """
+
     flags.END_FLAG = False
     data_received = request.get_json()
 
+    # Get the configuration and set default values if not present
     pid_checkbox_value = data_received.get('pidCheckbox', False)
     pid_value = data_received.get('pidInput', 0)
 
@@ -82,6 +117,7 @@ def start():
     smoothing_checkbox_value = data_received.get('smoothingCheckbox', False)
     smoothing_value = data_received.get('SmoothingInput', 1)
 
+    # Create the configuration
     configuration = {
         'pidCheckbox': pid_checkbox_value,
         'pidInput': pid_value,
@@ -113,12 +149,23 @@ def start():
 
 @MetricInsight_blueprint.route('/stop', methods=['POST'])
 def stop():
+    """
+    Stop the MetricInsight program
+    :return: Response to the client (acknowledgement : True or False)
+    """
+
     print('Arrêt de MetricInsight...')
     flags.END_FLAG = True
     return jsonify({'acknowledgement': True})
 
 
 def MetricInsight(configuration):
+    """
+    Start the different threads for the MetricInsight program
+    :param configuration:
+    :return:
+    """
+
     MAX_QUEUE_SIZE = int(configuration['FreqInput']) * 10
 
     global shared_queues
@@ -126,6 +173,7 @@ def MetricInsight(configuration):
     shared_queues = {}
     threads = {}
 
+    # Create the threads depending on the configuration
     if configuration['gpuCheckbox']:
         shared_queues['GPU'] = queue.Queue(MAX_QUEUE_SIZE)
         threads['thread_GPU'] = threading.Thread(target=web_utilisation_gpu, args=(shared_queues['GPU'], configuration))
@@ -159,17 +207,22 @@ def MetricInsight(configuration):
 
 
 def conso(queueP):
+    """
+    Consume the queue
+    :param queueP:
+    :return: List of data and flag (True if the program is still running, False if the program is finished)
+    """
     L = []
 
-    # Copie & vide la queue
+    # Copy of the queue
     with queueP.mutex:
         queue_copy = deepcopy(queueP.queue)
 
-    # Vidange de la copie
+    # Consume the queue
     for item in queue_copy:
         queueP.get()
 
-        # Vérifier si c'est le signal de fin
+        # If the item is "END", the program is finished
         if item == "END":
             print("Le producteur a terminé. Fin du traitement.")
             return L, False
