@@ -1,3 +1,13 @@
+"""
+@package routes
+@file metricInsight.py
+@brief This file is the entry point for the MetricInsight program. It defines the routes and the functions to start and stop the program.
+@details The program is started and stopped using the start and stop routes. The data is sent to the client using the get_data routes.
+@version 1.0
+@date 2020-11-20
+"""
+
+# Import the required packages
 import json
 import time
 
@@ -13,8 +23,10 @@ from MetricInsight.Power.utilisation import web_tilisation_power
 from MetricInsight.CPU.utilisation import web_utilisation_cpu, web_utilisation_cpus
 from MetricInsight.Shared import flags
 
+# Global variables
 global shared_queues
 
+# Create the blueprint
 MetricInsight_blueprint = Blueprint('MetricInsight', __name__, url_prefix='/MetricInsight')
 
 

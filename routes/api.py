@@ -1,7 +1,16 @@
-from flask import Blueprint, request, redirect, jsonify
-import time
-from flask_sse import sse
+"""
+@package routes
+@file api.py
+@brief This file is the entry point for the MetricInsight api.
+@details
+@version 1.0
+@date 2020-11-20
+"""
 
+# Import the required packages
+from flask import Blueprint, jsonify
+
+# Create the blueprint
 api_blueprint = Blueprint('api', __name__, url_prefix='/api')
 
 

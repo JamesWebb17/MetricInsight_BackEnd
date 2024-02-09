@@ -1,5 +1,13 @@
-import os
+"""
+@package app.py
+@file app.py
+@brief This file is the entry point for the Flask app. It creates the app and registers the blueprints.
+@details The app is created and the blueprints are registered. The app is then run.
+@version 1.0
+@date 2020-11-20
+"""
 
+# Import the required packages
 from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
