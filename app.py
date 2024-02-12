@@ -8,6 +8,8 @@
 """
 
 # Import the required packages
+import os
+
 from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -16,6 +18,13 @@ from routes import contact, metricInsight, api
 
 # Load the environment variables
 load_dotenv()
+
+# Set the environment variables for the back-end IP and port
+back_end_ip = os.getenv("BACKEND_IP")
+port = os.getenv("PORT")
+
+print(f"BACKEND_IP: {back_end_ip}")
+print(f"PORT: {port}")
 
 # Create the Flask app
 app = Flask(__name__)
@@ -30,4 +39,4 @@ app.register_blueprint(api.api_blueprint, url_prefix='/api')
 
 # Run the app
 if __name__ == '__main__':
-    app.run()
+    app.run(port=port, host=back_end_ip, debug=True)
