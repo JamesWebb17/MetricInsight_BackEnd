@@ -4,7 +4,7 @@
 @brief This file is the entry point for the MetricInsight contact.
 @details This file is the entry point for the MetricInsight contact. It defines the routes and the functions to send a message to the MetricInsight team.
 @version 1.0
-@date 2020-11-20
+@date 2024-02-12
 """
 
 from flask import Blueprint, request, redirect

@@ -4,7 +4,7 @@
 @brief This file is the entry point for the MetricInsight program. It defines the routes and the functions to start and stop the program.
 @details The program is started and stopped using the start and stop routes. The data is sent to the client using the get_data routes.
 @version 1.0
-@date 2020-11-20
+@date 2024-02-12
 """
 
 # Import the required packages

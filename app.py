@@ -4,7 +4,7 @@
 @brief This file is the entry point for the Flask app. It creates the app and registers the blueprints.
 @details The app is created and the blueprints are registered. The app is then run.
 @version 1.0
-@date 2020-11-20
+@date 2024-02-12
 """
 
 # Import the required packages
