@@ -79,8 +79,7 @@ def web_utilisation_cpu(shared_queue, configuration):
         time.sleep(1 / frequency)
 
         list_charge_cpu = calcul_charge_cpu([temps_cpu, temps_cpu_t], [temps_uptime, temps_uptime_t])
-        if list_charge_cpu[-1] != -1:
-            shared_queue.put([now - start, list_charge_cpu[-1]])
+        shared_queue.put([now - start, list_charge_cpu[-1]])
 
         temps_cpu = temps_cpu_t
         temps_uptime = temps_uptime_t
@@ -107,7 +106,7 @@ def calcul_charge_cpu(list_utime, list_uptime):
             list_charge_cpu.append(cpu_utime / cpu_time * 100)
 
         else:
-            list_charge_cpu.append(-1)
+            list_charge_cpu.append(0)
 
     return list_charge_cpu
 
@@ -149,8 +148,7 @@ def web_utilisation_cpus(shared_queue, configuration):
 
         for i in range(0, len(temps_cpu)):
             t = calcul_charge_cpu([temps_cpu[i], temps_cpu_t[i]], [temps_uptime, temps_uptime_t])
-            if t[-1] != -1:
-                list_charge_cpu.append(t[-1])
+            list_charge_cpu.append(t[-1])
 
         data_to_put = [now - start] + list_charge_cpu
         shared_queue.put(data_to_put)
