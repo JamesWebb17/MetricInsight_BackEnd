@@ -94,7 +94,7 @@ def web_tilisation_power(shared_queue, configuration):
 
     while (vdd_gpu_soc.read("3", "1") != -1 and vdd_cpu_cv.read("3", "2") != -1 and
            vin_sys_5_v0.read("3", "3") != -1 and vddq_vdd2_1_v8_ao.read("4", "2") != -1 and
-           now - start < interval and
+           now - start < interval and not flags.END_FLAG and
            (flags.THREAD_CPU_END_FLAG is False or flags.THREAD_MEM_END_FLAG is False)):
         now = time.clock_gettime(time.CLOCK_REALTIME)
 
