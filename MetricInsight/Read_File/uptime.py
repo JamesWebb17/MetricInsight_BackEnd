@@ -27,8 +27,6 @@ class Uptime:
             #with open('./MetricInsight/Files/uptime') as f:
                 data = f.read().split()
                 self.total_operational_time = float(data[0])
-                if self.total_operational_time == 0:
-                    self.total_operational_time = 0.1
                 self.idle_time = float(data[1])
         except FileNotFoundError:
             print("Le fichier /proc/uptime n'existe pas.")

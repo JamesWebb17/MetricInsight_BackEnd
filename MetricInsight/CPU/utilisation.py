@@ -102,6 +102,9 @@ def calcul_charge_cpu(list_utime, list_uptime):
         cpu_utime = (list_utime[i + 1] - list_utime[i]) / 100
         cpu_time = list_uptime[i + 1] - list_uptime[i]
 
+        if cpu_time == 0:
+            cpu_time = 0.0001
+
         list_charge_cpu.append(cpu_utime / cpu_time * 100)
 
     return list_charge_cpu
