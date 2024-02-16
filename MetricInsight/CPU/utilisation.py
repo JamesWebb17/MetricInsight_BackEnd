@@ -91,6 +91,12 @@ def web_utilisation_cpu(shared_queue, configuration):
 
 
 def calcul_charge_cpu(list_utime, list_uptime):
+    """
+    Calculate the CPU usage of a process.
+    :param list_utime:
+    :param list_uptime:
+    :return:
+    """
     list_charge_cpu = []
     for i in range(0, len(list_uptime) - 1):
         cpu_utime = (list_utime[i + 1] - list_utime[i]) / 100
@@ -123,7 +129,7 @@ def web_utilisation_cpus(shared_queue, configuration):
     temps_cpu_t = [0 for i in range(0, 13)]
     list_charge_cpu = []
 
-    temps_uptime = 0
+    temps_uptime = 0.01
 
     while process_info.read_stat() != -1 and uptime_info.read_proc_uptime() != -1 and now - start < interval and not flags.END_FLAG:
         now = time.clock_gettime(time.CLOCK_REALTIME)
