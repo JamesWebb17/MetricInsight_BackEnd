@@ -102,12 +102,11 @@ def calcul_charge_cpu(list_utime, list_uptime):
         cpu_utime = (list_utime[i + 1] - list_utime[i]) / 100
         cpu_time = list_uptime[i + 1] - list_uptime[i]
 
-        if cpu_time == 0:
-            cpu_time = 0.0001
-
-        list_charge_cpu.append(cpu_utime / cpu_time * 100)
+        if cpu_time != 0:
+            list_charge_cpu.append(cpu_utime / cpu_time * 100)
 
     return list_charge_cpu
+
 
 def web_utilisation_cpus(shared_queue, configuration):
     """
@@ -141,7 +140,8 @@ def web_utilisation_cpus(shared_queue, configuration):
         temps_cpu_t[0] = process_info.cpu_stats.get(f"cpu").utime + process_info.cpu_stats.get(f"cpu").stime
 
         for i in range(1, len(temps_cpu)):
-            temps_cpu_t[i] = process_info.cpu_stats.get(f"cpu{i - 1}").utime + process_info.cpu_stats.get(f"cpu{i - 1}").stime
+            temps_cpu_t[i] = process_info.cpu_stats.get(f"cpu{i - 1}").utime + process_info.cpu_stats.get(
+                f"cpu{i - 1}").stime
 
         for i in range(0, len(temps_cpu)):
             t = calcul_charge_cpu([temps_cpu[i], temps_cpu_t[i]], [temps_uptime, temps_uptime_t])
@@ -162,6 +162,7 @@ def web_utilisation_cpus(shared_queue, configuration):
     print("Fin du thread CPU.")
     flags.THREAD_CPU_END_FLAG = True
     return 0
+
 
 def utilisation_cpus(frequency, interval, result):
     """
