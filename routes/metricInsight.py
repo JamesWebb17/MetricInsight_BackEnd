@@ -103,6 +103,11 @@ def start():
     """
 
     flags.END_FLAG = False
+    flags.THREAD_CPU_END_FLAG = False
+    flags.THREAD_GPU_END_FLAG = False
+    flags.THREAD_MEM_END_FLAG = False
+    flags.THREAD_POWER_END_FLAG = False
+
     data_received = request.get_json()
 
     # Get the configuration and set default values if not present
