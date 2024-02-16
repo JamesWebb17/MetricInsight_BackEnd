@@ -36,16 +36,9 @@ def get_data(name):
     :param name: name of the queue
     :return:
     """
-    time.sleep(1)
-    while True:
-        data, flag = conso(shared_queues[name])
-        time.sleep(1)
-        if flag:
-            yield f'data: {json.dumps({"data": data})}\n\n'
-        else:
-            yield f'data: {json.dumps({"data": data})}\n\n'
-            yield f'data: {json.dumps({"end": -1})}\n\n'
-            break
+    data, flag = conso(shared_queues[name])
+    data = {'data': data, 'running': flag}
+    return jsonify(data)
 
 
 @MetricInsight_blueprint.route('/get_data/GPU', methods=['GET'])
@@ -54,7 +47,7 @@ def get_data_GPU():
     Sending GPU data to the client
     :return: Data for the client
     """
-    return Response(get_data('GPU'), mimetype='text/event-stream')
+    return get_data('GPU')
 
 
 @MetricInsight_blueprint.route('/get_data/Memory', methods=['GET'])
@@ -63,7 +56,7 @@ def get_data_Memory():
     Sending Memory data to the client
     :return: Data for the client
     """
-    return Response(get_data('MEM'), mimetype='text/event-stream')
+    return get_data('MEM')
 
 
 @MetricInsight_blueprint.route('/get_data/Memory_PID', methods=['GET'])
@@ -72,7 +65,7 @@ def get_data_Memory_PID():
     Sending Memory_PID data to the client
     :return: Data for the client
     """
-    return Response(get_data('MEM'), mimetype='text/event-stream')
+    return get_data('MEM')
 
 
 @MetricInsight_blueprint.route('/get_data/CPU_PID', methods=['GET'])
@@ -81,7 +74,8 @@ def get_data_CPU_PID():
     Sending CPU_PID data to the client
     :return: Data for the client
     """
-    return Response(get_data('CPU'), mimetype='text/event-stream')
+    return get_data('CPU')
+
 
 @MetricInsight_blueprint.route('/get_data/CPU', methods=['GET'])
 def get_data_CPU():
@@ -89,7 +83,7 @@ def get_data_CPU():
     Sending CPU data to the client
     :return: Data for the client
     """
-    return Response(get_data('CPU'), mimetype='text/event-stream')
+    return get_data('CPU')
 
 
 @MetricInsight_blueprint.route('/get_data/Power', methods=['GET'])
@@ -98,7 +92,7 @@ def get_data_Power():
     Sending Power data to the client
     :return: Data for the client
     """
-    return Response(get_data('POWER'), mimetype='text/event-stream')
+    return get_data('POWER')
 
 
 @MetricInsight_blueprint.route('/start', methods=['POST'])
@@ -207,7 +201,8 @@ def MetricInsight(configuration):
     else:
         if configuration['cpuCheckbox']:
             shared_queues['CPU'] = queue.Queue(MAX_QUEUE_SIZE)
-            threads['thread_CPU'] = threading.Thread(target=web_utilisation_cpus, args=(shared_queues['CPU'], configuration))
+            threads['thread_CPU'] = threading.Thread(target=web_utilisation_cpus,
+                                                     args=(shared_queues['CPU'], configuration))
         if configuration['memoryCheckbox']:
             shared_queues['MEM'] = queue.Queue(MAX_QUEUE_SIZE)
             threads['thread_MEM'] = threading.Thread(target=web_utilisation_all_memory,
