@@ -129,7 +129,8 @@ def web_utilisation_cpus(shared_queue, configuration):
     temps_cpu_t = [0 for i in range(0, 13)]
     list_charge_cpu = []
 
-    temps_uptime = 0.01
+    temps_uptime = 0
+    time.sleep(0.01)
 
     while process_info.read_stat() != -1 and uptime_info.read_proc_uptime() != -1 and now - start < interval and not flags.END_FLAG:
         now = time.clock_gettime(time.CLOCK_REALTIME)
