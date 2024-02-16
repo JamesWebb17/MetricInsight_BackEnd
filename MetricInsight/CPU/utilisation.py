@@ -105,6 +105,9 @@ def calcul_charge_cpu(list_utime, list_uptime):
         if cpu_time != 0:
             list_charge_cpu.append(cpu_utime / cpu_time * 100)
 
+        else:
+            list_charge_cpu.append(0)
+
     return list_charge_cpu
 
 
