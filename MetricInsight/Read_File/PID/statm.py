@@ -1,38 +1,75 @@
-""" @package PID
-Documentation for statm module.
+"""!
+@brief Documentation for proc/[PID]/statm file.
 
-More details.
-Class for reading hwmon files and create object Statm.
+@section package File Information
+- package : PID
+- name : statm.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- None
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
 
 
 class Statm:
+    """!
+    Documentation for Statm class
+
+    @details The Statm class is used to read the /proc/[PID]/statm file and store the values in an object.
+    """
 
     def __init__(self, pid):
-        """
+        """!
         The constructor for Statm class.
-        :param pid: pid of the process
+        @param pid: pid of the process
         """
 
+        ## pid of the process
         self.pid = pid
+
+        ## total program size
         self.size = 0
+
+        ## resident set size
         self.resident = 0
+
+        ## shared pages
         self.share = 0
+
+        ## text (code)
         self.text = 0
+
+        ## library
         self.lib = 0
+
+        ## data/stack
         self.data = 0
+
+        ## dirty pages
         self.dt = 0
 
     def read_proc_statm(self):
-        """
+        """!
         Read the values of the Statm object.
-        :return:
+        @return status of the read (0 if successful, -1 if not)
         """
 
         pid = self.pid
         try:
             with open(f'/proc/{pid}/statm') as f:
-            #with open(f'./Files/21863/statm.txt') as f:
+            #with open(f'./MetricInsight/Files/21863/statm.txt') as f:
                 data = f.read().split()
                 if len(data) >= 7:  # Assurez-vous que suffisamment de données ont été lues
                     self.size = int(data[0])
@@ -47,9 +84,9 @@ class Statm:
             return -1
 
     def display_info(self):
-        """
+        """!
         Display the values of the Statm object.
-        :return:
+        @return None
         """
 
         print(f"Taille totale : {self.size}")

@@ -1,10 +1,43 @@
+"""!
+@brief Documentation for MetricInsight file.
+
+@section package File Information
+- package : MetricInsight
+- name : MetricInsight.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- threading (https://docs.python.org/3/library/threading.html)
+--> Access to the threading module
+- CPU.utilisation (local)
+--> Access to the utilisation_cpu function and the utilisation_cpus function
+- GPU.utilisation (local)
+--> Access to the utilisation_gpu function
+- Memory.utilisation (local)
+--> Access to the utilisation_mem function and the utilisation_mems function
+- Arguments.usage (local)
+--> Access to the usage function
+- Power.utilisation (local)
+--> Access to the utilisation_power function
+- Shared.flags (local)
+--> Access to the flags module
+- Shared.result (local)
+--> Access to the Result class, read_data function, save_data function, plot_data function and smooth_data function
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
-This is the main file of the project. It is used to launch the program.
 
-More details.
-
-"""
-
+# Importation of the necessary libraries
 import threading
 
 from CPU.utilisation import utilisation_cpu, utilisation_cpus
@@ -19,9 +52,9 @@ from Shared.result import read_data, save_data, plot_data, smooth_data
 
 
 def main():
-    """
+    """!
     Main function of the program.
-    :return: status of the program
+    @return status of the program
     """
 
     threads = []

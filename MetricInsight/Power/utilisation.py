@@ -1,8 +1,31 @@
-""" @package Power
-Documentation for Power module.
+"""!
+@brief Documentation for Power module.
 
-More details.
-Function for calculating the Power usage of a process.
+@section package File Information
+- package : Power
+- name : utilisation.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- time (https://docs.python.org/3/library/time.html)
+- MetricInsight.Shared.flags
+--> Access to the flags for the threads.
+- MetricInsight.Shared.result
+--> Access to the Result class.
+- MetricInsight.Read_File.hwmon
+--> Access to the Hwmon class.
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
 
 import time
@@ -13,12 +36,12 @@ from MetricInsight.Shared.result import Result
 
 
 def utilisation_power(frequency, interval, result):
-    """
+    """!
     Find the Power usage of a process in files system.
-    :param frequency: point per second wanted
-    :param interval: interval of time wanted
-    :param result: array for sending the result to the main thread
-    :return: status of the function
+    @param frequency: point per second wanted
+    @param interval: interval of time wanted
+    @param result: array for sending the result to the main thread
+    @return status of the function
     """
 
     vdd_gpu_soc = Hwmon()
@@ -68,11 +91,11 @@ def utilisation_power(frequency, interval, result):
 
 
 def web_tilisation_power(shared_queue, configuration):
-    """
+    """!
     Find the Memory usage of a process in files /proc/[pid]/statm and /proc/uptime.
-    :param shared_queue: queue for sending the result to the main thread
-    :param configuration: configuration of the program
-    :return: status of the function
+    @param shared_queue: queue for sending the result to the main thread
+    @param configuration: configuration of the program
+    @return status of the function
     """
 
     flags.THREAD_POWER_END_FLAG = False

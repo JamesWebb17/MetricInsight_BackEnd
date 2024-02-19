@@ -1,26 +1,55 @@
-""" @package read_file
-Documentation for hwmon module.
+"""!
+@brief Documentation for "/sys/class/hwmon/hwmon" + hwmon_id + "/in" + file_id + "_label" file.
 
-More details.
-Class for reading hwmon files and create object Hwmon.
+@section package File Information
+- package : Read_File
+- name : hwmon.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- None
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
 
 
 class Hwmon:
+    """!
+    Documentation for Hwmon class
+
+    @details The Hwmon class is used to read the /sys/class/hwmon/hwmon[hwmon_id]/in[file_id]_input file and store the values in an object.
+    """
+
     def __init__(self):
-        """
+        """!
         The constructor for Hwmon class.
         """
+
+        ## Name of the Hwmon object
         self.name = ""
+
+        ## Volts of the Hwmon object
         self.volts = 0
+
+        ## Amps of the Hwmon object
         self.amps = 0
 
     def __set_name__(self, hwmon_id, file_id):
-        """
+        """!
         Set the name of the Hwmon object.
-        :param hwmon_id: id of the hwmon folder
-        :param file_id: id of the file
-        :return:
+        @param hwmon_id: id of the hwmon folder
+        @param file_id: id of the file
+        @return status : 0 if the file exists, -1 if the file does not exist
         """
 
         file_label = "/sys/class/hwmon/hwmon" + hwmon_id + "/in" + file_id + "_label"
@@ -32,11 +61,11 @@ class Hwmon:
             return -1
 
     def read(self, hwmon_id, file_id):
-        """
+        """!
         Read the values of the Hwmon object.
-        :param hwmon_id: id of the hwmon folder
-        :param file_id: id of the file
-        :return:
+        @param hwmon_id: id of the hwmon folder
+        @param file_id: id of the file
+        @return status : 0 if successful, -1 if not
         """
 
         file_in = "/sys/class/hwmon/hwmon" + hwmon_id + "/in" + file_id + "_input"
@@ -54,4 +83,3 @@ class Hwmon:
         except FileNotFoundError:
             print(f"Le fichier {file_curr} n'existe pas.")
             return -1
-

@@ -1,8 +1,33 @@
-""" @package Memory
-Documentation for Memory module.
+"""!
+@brief Documentation for Memory module.
 
-More details.
-Function for calculating the Memory usage of a process.
+@section package File Information
+- package : Memory
+- name : utilisation.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- time (https://docs.python.org/3/library/time.html)
+- MetricInsight.Read_File.PID.statm.Statm (local)
+--> Access to Statm class.
+- MetricInsight.Read_File.meminfo.MemInfo (local)
+--> Access to MemInfo class.
+- MetricInsight.Shared.flags (local)
+--> Access to THREAD_MEM_END_FLAG and END_FLAG.
+- MetricInsight.Shared.result.Result (local)
+--> Access to Result class.
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
 
 import time
@@ -14,13 +39,13 @@ from MetricInsight.Shared.result import Result
 
 
 def utilisation_mem(pid, frequency, interval, result):
-    """
+    """!
     Find the Memory usage of a process in files /proc/[pid]/statm and /proc/uptime.
-    :param pid: pid of the process
-    :param frequency: frequency of the points
-    :param interval: interval of time wanted
-    :param result: array for sending the result to the main thread
-    :return: status of the function
+    @param pid: pid of the process
+    @param frequency: frequency of the points
+    @param interval: interval of time wanted
+    @param result: array for sending the result to the main thread
+    @return status of the function
     """
 
     process_info = Statm(pid)
@@ -45,12 +70,12 @@ def utilisation_mem(pid, frequency, interval, result):
 
 
 def utilisation_mems(frequency, interval, result):
-    """
+    """!
     Find the Memory usage without a focus on a process in file /proc/meminfo and /proc/uptime.
-    :param frequency: frequency of the points
-    :param interval: interval of time wanted
-    :param result: array for sending the result to the main thread
-    :return: status of the function
+    @param frequency: frequency of the points
+    @param interval: interval of time wanted
+    @param result: array for sending the result to the main thread
+    @return status of the function
     """
 
     process_info = MemInfo()
@@ -75,11 +100,11 @@ def utilisation_mems(frequency, interval, result):
 
 
 def web_utilisation_memory(shared_queue, configuration):
-    """
+    """!
        Find the Memory usage without a focus on a process in file /proc/meminfo and /proc/uptime.
-       :param shared_queue: queue for sending the result to the main thread
-       :param configuration: configuration of the program
-       :return: status of the function
+       @param shared_queue: queue for sending the result to the main thread
+       @param configuration: configuration of the program
+       @return status of the function
    """
 
     flags.THREAD_MEM_END_FLAG = False
@@ -107,11 +132,11 @@ def web_utilisation_memory(shared_queue, configuration):
 
 
 def web_utilisation_all_memory(shared_queue, configuration):
-    """
+    """!
        Find the Memory usage without a focus on a process in file /proc/meminfo and /proc/uptime.
-       :param shared_queue: queue for sending the result to the main thread
-       :param configuration: configuration of the program
-       :return: status of the function
+       @param shared_queue: queue for sending the result to the main thread
+       @param configuration: configuration of the program
+       @return status of the function
    """
 
     flags.THREAD_MEM_END_FLAG = False

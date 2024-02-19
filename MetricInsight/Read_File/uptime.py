@@ -1,25 +1,50 @@
-""" @package read_file
+"""!
+@brief Documentation for proc/uptime file.
 
-Documentation for uptime module.
+@section package File Information
+- package : Read_File
+- name : uptime.py
 
-More details.
-Class for reading hwmon files and create object Uptime.
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- None
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
 
 
 class Uptime:
+    """!
+    Documentation for Uptime class
+
+    @details The Uptime class is used to read the /proc/uptime file and store the values in an object.
+    """
+
     def __init__(self):
-        """
+        """!
         The constructor for Uptime class.
         """
 
+        ## Total operational time
         self.total_operational_time = 0
+
+        ## Idle time
         self.idle_time = 0
 
     def read_proc_uptime(self):
-        """
+        """!
         Read the values of the Uptime object.
-        :return:
+        @return status of the file reading (0 if successful, -1 if not)
         """
 
         try:
@@ -33,9 +58,8 @@ class Uptime:
             return -1
 
     def display_info(self):
-        """
+        """!
         Display the values of the Uptime object.
-        :return:
         """
 
         print(f"Temps total de fonctionement: {self.total_operational_time}")

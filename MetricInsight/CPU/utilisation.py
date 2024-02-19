@@ -1,9 +1,37 @@
-""" @package CPU
-Documentation for CPU module.
+"""!
+@brief Documentation for CPU module.
 
-More details.
-Function for calculating the CPU usage of a process.
+@section package File Information
+- package : CPU
+- name : utilisation.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- time (https://docs.python.org/3/library/time.html)
+- MetricInsight.Read_File.PID.stat.Stat (local)
+--> Access to Stat and ProcStat classes.
+- MetricInsight.Read_File.stat.Stat (local)
+--> Access to Stat class.
+- MetricInsight.Read_File.uptime.Uptime (local)
+--> Access to Uptime class.
+- MetricInsight.Shared.flags (local)
+--> Access to END_FLAG and THREAD_CPU_END_FLAG.
+- MetricInsight.Shared.result.Result (local)
+--> Access to Result class.
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
+
 
 import time
 
@@ -15,13 +43,13 @@ from MetricInsight.Shared.result import Result
 
 
 def utilisation_cpu(pid, frequency, interval, result):
-    """
+    """!
     Find the CPU usage of a process in files /proc/[pid]/stat and /proc/uptime.
-    :param pid: pid of the process
-    :param frequency: point per second wanted
-    :param interval: interval of time wanted
-    :param result: array for sending the result to the main thread
-    :return: status of the function
+    @param pid: pid of the process
+    @param frequency: point per second wanted
+    @param interval: interval of time wanted
+    @param result: array for sending the result to the main thread
+    @return status of the function
     """
 
     process_info = ProcStat(pid)
@@ -48,11 +76,11 @@ def utilisation_cpu(pid, frequency, interval, result):
 
 
 def web_utilisation_cpu(shared_queue, configuration):
-    """
+    """!
     Find the Memory usage of a process in files /proc/[pid]/statm and /proc/uptime.
-    :param shared_queue: queue for sending the result to the main thread
-    :param configuration: configuration of the program
-    :return: status of the function
+    @param shared_queue: queue for sending the result to the main thread
+    @param configuration: configuration of the program
+    @return status of the function
     """
 
     flags.THREAD_CPU_END_FLAG = False
@@ -91,11 +119,11 @@ def web_utilisation_cpu(shared_queue, configuration):
 
 
 def calcul_charge_cpu(list_utime, list_uptime):
-    """
+    """!
     Calculate the CPU usage of a process.
-    :param list_utime:
-    :param list_uptime:
-    :return:
+    @param list_utime:
+    @param list_uptime:
+    @return list of the CPU usage
     """
     list_charge_cpu = []
     for i in range(0, len(list_uptime) - 1):
@@ -112,11 +140,11 @@ def calcul_charge_cpu(list_utime, list_uptime):
 
 
 def web_utilisation_cpus(shared_queue, configuration):
-    """
+    """!
     Find the Memory usage of a process in files /proc/[pid]/statm and /proc/uptime.
-    :param shared_queue: queue for sending the result to the main thread
-    :param configuration: configuration of the program
-    :return: status of the function
+    @param shared_queue: queue for sending the result to the main thread
+    @param configuration: configuration of the program
+    @return status of the function
     """
 
     flags.THREAD_CPU_END_FLAG = False
@@ -168,12 +196,12 @@ def web_utilisation_cpus(shared_queue, configuration):
 
 
 def utilisation_cpus(frequency, interval, result):
-    """
+    """!
     Find the CPU usage of a process in files /proc/stat and /proc/uptime.
-    :param frequency: point per second wanted
-    :param interval: interval of time wanted
-    :param result: array for sending the result to the main thread
-    :return: status of the function
+    @param frequency: point per second wanted
+    @param interval: interval of time wanted
+    @param result: array for sending the result to the main thread
+    @return status of the function
     """
 
     process_info = Stat()

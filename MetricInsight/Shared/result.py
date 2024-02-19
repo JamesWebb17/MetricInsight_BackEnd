@@ -1,33 +1,65 @@
-""" @package Shared
-Documentation for result module.
+"""!
+@brief Documentation for Result file.
 
-More details.
-Class for storing the result of a thread.
+@section package File Information
+- package : Shared
+- name : result.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- csv (https://docs.python.org/3/library/csv.html)
+--> Access to the csv module for reading and writing csv files.
+- matplotlib.pyplot (https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.html)
+--> Access to the pyplot module from the matplotlib library for plotting data.
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
+
+# Importation of the necessary libraries
 import csv
 
 from matplotlib import pyplot as plt
 
 
 class Result:
+    """!
+    Documentation for Result class
+
+    @details The Result class is used to store the data of a result.
+    """
+
     def __init__(self, name, message, data):
-        """
+        """!
         The constructor for Result class.
-        :param name: name of the result
-        :param message: message to print on the graph
-        :param data: data of the result
+        @param name: name of the result
+        @param message: message to print on the graph
+        @param data: data of the result
         """
 
+        ## Name of the result
         self.name = name
+
+        ## Message to print on the graph
         self.message = message
+
+        ## Data of the result
         self.data = data
 
 
 def plot_data(data_list: [Result]):
-    """
+    """!
     Plot the data in the data_list.
-    :param data_list: list of data to plot
-    :return:
+    @param data_list: list of data to plot
     """
 
     for i, data in enumerate(data_list):
@@ -40,11 +72,11 @@ def plot_data(data_list: [Result]):
 
 
 def smooth_data(data_list: [Result], nb_points: int):
-    """
+    """!
     Smooth the data in the data_list.
-    :param data_list: list of data to smooth
-    :param nb_points: number of points to use for smoothing
-    :return: list of smoothed data
+    @param data_list: list of data to smooth
+    @param nb_points: number of points to use for smoothing
+    @return list of smoothed data
     """
 
     result = []
@@ -63,11 +95,11 @@ def smooth_data(data_list: [Result], nb_points: int):
 
 
 def save_data(file_name, data: [Result]):
-    """
+    """!
     Save the data in a csv file.
-    :param file_name: name of the file
-    :param data: data to save
-    :return: status of the function
+    @param file_name: name of the file
+    @param data: data to save
+    @return status of the function
     """
 
     for result in data:
@@ -84,12 +116,13 @@ def save_data(file_name, data: [Result]):
 
 
 def read_data(path: str, result: Result):
-    """
+    """!
     Read the data in a csv file.
-    :param path: path of the file
-    :param result:
-    :return: result with the data
+    @param path: path of the file
+    @param result:
+    @return result with the data
     """
+
     time_data = []
     data_data = []
     with open(path, mode='r', newline='') as csv_file:

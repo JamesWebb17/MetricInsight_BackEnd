@@ -1,68 +1,191 @@
-""" @package read_file
-This file contains the MemInfo class which is used to read the /proc/meminfo file
+"""!
+@brief Documentation for proc/meminfo file.
+
+@section package File Information
+- package : Read_File
+- name : meminfo.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- None
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
 
 
 class MemInfo:
+    """!
+    Documentation for MemInfo class
+
+    @details The MemInfo class is used to read the /proc/meminfo file and store the values in an object.
+    """
+
     def __init__(self):
-        """
+        """!
         The constructor for MemInfo class.
         """
 
+        ## Total usable RAM (i.e., physical RAM minus a few reserved bits and the kernel binary code)
         self.mem_total = 0
+
+        ## Free memory in the system
         self.mem_free = 0
+
+        ## An estimate of how much memory is available
         self.mem_available = 0
+
+        ## Relatively temporary storage for raw disk blocks that shouldn't get tremendously large (20MB or so)
         self.buffers = 0
+
+        ## In-memory cache for files read from the disk (the page cache)
         self.cached = 0
+
+        ## Amount of swap space that is currently in use
         self.swap_cached = 0
+
+        ## Memory that has been used more recently and usually not reclaimed unless absolutely necessary
         self.active = 0
+
+        ## Memory which has been less recently used
         self.inactive = 0
+
+        ## Memory that has been used more recently and usually not reclaimed unless absolutely necessary
         self.active_anon = 0
+
+        ## Memory which has been less recently used
         self.inactive_anon = 0
+
+        ## Memory that has been used more recently and usually not reclaimed unless absolutely necessary
         self.active_file = 0
+
+        ## Memory which has been less recently used
         self.inactive_file = 0
+
+        ## Memory that cannot be reclaimed
         self.unevictable = 0
+
+        ## Memory that has been locked in memory
         self.mlocked = 0
+
+        ## Total swap space
         self.swap_total = 0
+
+        ## Swap space that is currently unused
         self.swap_free = 0
+
+        ## Memory which is waiting to get written back to the disk
         self.dirty = 0
+
+        ## Memory which is actively being written back to the disk
         self.writeback = 0
+
+        ## Non-file backed pages mapped into user-space page tables
         self.anonPages = 0
+
+        ## File-backed pages mapped into user-space page tables
         self.mapped = 0
+
+        ## POSIX Shared Memory
         self.shmem = 0
+
+        ## Kernel data structures
         self.slab = 0
+
+        ## Part of the Slab that might be reclaimed, such as caches
         self.sreclaimable = 0
+
+        ## Part of the Slab that cannot be reclaimed
         self.sunreclaim = 0
+
+        ## Kernel stack
         self.kernelstack = 0
+
+        ## Page tables
         self.pagetables = 0
+
+        ## NFS pages sent to the server but not yet committed to stable storage
         self.nfs_unstable = 0
+
+        ## Memory used for block device "bounce buffers"
         self.bounce = 0
+
+        ## Memory used as a cache for files
         self.writebacktmp = 0
+
+        ## The total amount of memory that the system can commit
         self.commitlimit = 0
+
+        ## The total amount of memory currently committed to the system
         self.committed_as = 0
+
+        ## Total size of vmalloc memory area
         self.vmaltotal = 0
+
+        ## Amount of vmalloc area which is used
         self.vmallocused = 0
+
+        ## Largest contiguous block of vmalloc area which is free
         self.vmallocchunk = 0
+
+        ## Size of per-cpu memory area
         self.percpu = 0
+
+        ## Memory that has been corrupted
         self.hardwarecorrupted = 0
+
+        ## HugeTLB memory total
         self.anonhugepages = 0
+
+        ## HugeTLB memory that is shared
         self.shmemhugepages = 0
+
+        ## HugeTLB memory that is mapped into user space with VM_PFNMAP
         self.shmempmdmapped = 0
+
+        ## HugeTLB memory that is file backed
         self.filehugepages = 0
+
+        ## HugeTLB memory that is mapped into user space with VM_PFNMAP
         self.filepmdmapped = 0
+
+        ## Total size of CMA memory area
         self.cmatotal = 0
+
+        ## Amount of CMA memory which is free
         self.cmafree = 0
+
+        ## HugeTLB memory total
         self.hugepages_total = 0
+
+        ## HugeTLB memory that is free
         self.hugepages_free = 0
+
+        ## HugeTLB memory that is reserved
         self.hugepages_rsvd = 0
+
+        ## HugeTLB memory that is surplus
         self.hugepages_surp = 0
+
+        ## HugeTLB memory page size
         self.hugetpagesize = 0
+
+        ## HugeTLB memory that is free
         self.hugetlb = 0
 
     def read_meminfo(self):
-        """
+        """!
         Read the values of the MemInfo object from the /proc/meminfo file.
-        :return:
+        @return status of the read (0 if successful, -1 if not)
         """
 
         try:
@@ -174,7 +297,7 @@ class MemInfo:
     def __str__(self):
         """
         Return a string representation of the MemInfo object.
-        :return: the string representation of the MemInfo object
+        @return the string representation of the MemInfo object
         """
 
         result_str = ""

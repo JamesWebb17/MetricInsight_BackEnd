@@ -1,72 +1,180 @@
-""" @package PID
-Documentation for stat module.
+"""!
+@brief Documentation for proc/[PID]/stat file.
 
-More details.
-Class for reading stat files and create object Stat.
+@section package File Information
+- package : PID
+- name : stat.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- None
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
 
 
 class Stat:
+    """!
+    Documentation for Stat class
+
+    @details The Stat class is used to read the /proc/[PID]/stat file and store the values in an object.
+    """
     def __init__(self, pid):
-        """
+        """!
         The constructor for Stat class.
-        :param pid: pid of the process
+        @param pid : pid of the process
         """
 
-        self.pid = pid  # PID du processus
-        self.name = ""  # Nom du processus
-        self.state = ""  # État du processus
-        self.ppid = 0  # PID du parent
-        self.pgrp = 0  # Groupe de processus
-        self.session = 0  # ID de session
-        self.tty_nr = 0  # Numéro du terminal
-        self.tpgid = 0  # Groupe de processus du terminal
-        self.flags = 0  # Drapeaux
-        self.minflt = 0  # Pages de fautes mineures
-        self.cminflt = 0  # Pages de fautes mineures de l'enfant
-        self.majflt = 0  # Pages de fautes majeures
-        self.cmajflt = 0  # Pages de fautes majeures de l'enfant
-        self.utime = 0  # Temps utilisateur (jiffies)
-        self.stime = 0  # Temps système (jiffies)
-        self.cutime = 0  # Temps utilisateur de l'enfant (jiffies)
-        self.cstime = 0  # Temps système de l'enfant (jiffies)
-        self.priority = 0  # Priorité
-        self.nice = 0  # Valeur de nice
-        self.num_threads = 0  # Nombre de threads
-        self.itrealvalue = 0  # Valeur de la minuterie réelle
-        self.starttime = 0  # Heure de démarrage (jiffies)
-        self.vsize = 0  # Taille virtuelle en octets
-        self.rss = 0  # Taille résidente en pages
-        self.rsslim = [0, 0]  # Limites du processeur en octets
-        self.startcode = 0  # Adresse de départ du code
-        self.endcode = 0  # Adresse de fin du code
-        self.startstack = 0  # Adresse de départ de la pile
-        self.kstkesp = 0  # Espacement actuel de la pile du noyau
-        self.kstkeip = 0  # Pointeur d'instruction de la pile du noyau
-        self.signal = 0  # Masque de signaux en attente
-        self.blocked = 0  # Masque de signaux bloqués
-        self.sigignore = 0  # Masque de signaux ignorés
-        self.sigcatch = 0  # Masque de signaux attrapés
-        self.wchan = 0  # Emplacement du système (si dormant)
-        self.nswap = 0  # Nombre de pages échangées
-        self.cnswap = 0  # Nombre de pages échangées de l'enfant
-        self.exit_signal = 0  # Signal de sortie du processus
-        self.processor = 0  # Dernier processeur exécuté
-        self.rt_priority = 0  # Priorité d'ordonnancement en temps réel
-        self.policy = 0  # Politique d'ordonnancement
-        self.delayacct_blkio_ticks = 0  # Cumul des délais d'entrées  et  sorties,  mesuré  en  top  horloge (centième de seconde).
-        self.cguest_time = 0  # Temps utilisateur de l'invité (jiffies)
+        ## PID of the process
+        self.pid = pid
+
+        ## Name of the process
+        self.name = ""
+
+        ## State of the process
+        self.state = ""
+
+        ## PID of the parent process
+        self.ppid = 0
+
+        ## Group ID of the process
+        self.pgrp = 0
+
+        ## ID of the session
+        self.session = 0
+
+        ## Number of the controlling terminal
+        self.tty_nr = 0
+
+        ## Group ID of the controlling terminal
+        self.tpgid = 0
+
+        ## Flags of the process
+        self.flags = 0
+
+        ## Page of minor faults
+        self.minflt = 0
+
+        ## Page of minor faults of the child
+        self.cminflt = 0
+
+        ## Page of major faults
+        self.majflt = 0
+
+        ## Page of major faults of the child
+        self.cmajflt = 0
+
+        ## Time of user (jiffies)
+        self.utime = 0
+
+        ## Time of system (jiffies)
+        self.stime = 0
+
+        ## Time of user of the child (jiffies)
+        self.cutime = 0
+
+        ## Time of system of the child (jiffies)
+        self.cstime = 0
+
+        ## Priority
+        self.priority = 0
+
+        ## Nice value
+        self.nice = 0
+
+        ## Number of threads
+        self.num_threads = 0
+
+        ## Value of the real timer
+        self.itrealvalue = 0
+
+        ## Start time (jiffies)
+        self.starttime = 0
+
+        ## Virtual size in bytes
+        self.vsize = 0
+
+        ## Resident size in pages
+        self.rss = 0
+
+        ## Limits of the processor in octets
+        self.rsslim = [0, 0]
+
+        ## Start address of the code
+        self.startcode = 0
+
+        ## End address of the code
+        self.endcode = 0
+
+        ## Start address of the stack
+        self.startstack = 0
+
+        ## Current stack pointer of the kernel
+        self.kstkesp = 0
+
+        ## Instruction pointer of the kernel stack
+        self.kstkeip = 0
+
+        ## Mask of signals pending
+        self.signal = 0
+
+        ## Mask of blocked signals
+        self.blocked = 0
+
+        ## Mask of ignored signals
+        self.sigignore = 0
+
+        ## Mask of signals caught
+        self.sigcatch = 0
+
+        ## Location of the system (if dormant)
+        self.wchan = 0
+
+        ## Number of pages swapped
+        self.nswap = 0
+
+        ## Number of pages swapped of the child
+        self.cnswap = 0
+
+        ## Exit signal of the process
+        self.exit_signal = 0
+
+        ## Last processor executed
+        self.processor = 0
+
+        ## Real-time scheduling priority
+        self.rt_priority = 0
+
+        ## Scheduling policy
+        self.policy = 0
+
+        ## Cumul of input and output delays, measured in top clock (hundredth of a second)
+        self.delayacct_blkio_ticks = 0
+
+        ## Time of user of the guest (jiffies)
+        self.cguest_time = 0
 
     def read_proc_stat(self):
-        """
+        """!
         Read the values of the Stat object.
-        :return:
+        @return status : -1 if the file does not exist
         """
 
         pid = self.pid
+
         try:
             with open(f'/proc/{pid}/stat') as f:
-            #with open(f'./Files/21863/stat.txt') as f:
+            #with open(f'./MetricInsight/Files/21863/stat.txt') as f:
                 data = f.read().split()
                 if len(data) >= 44:  # Assurez-vous que suffisamment de données ont été lues
                     self.name = data[1][1:-1]  # Nom du processus sans les parenthèses
@@ -116,9 +224,8 @@ class Stat:
             return -1
 
     def display_info(self):
-        """
+        """!
         Display the values of the Stat object.
-        :return:
         """
 
         print(f"Nom du processus : {self.name}")

@@ -1,34 +1,63 @@
-""" @package read_file
-This file contains the Stat class which is used to read the /proc/stat file
+"""!
+@brief Documentation for proc/stat file.
+
+@section package File Information
+- package : Read_File
+- name : stat.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- None
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
 
 
 class CPU:
-    """ Documentation for CPU class
+    """!
+     Documentation for CPU class
 
-    More details.
-    Class which is used to represent lines containing CPU statistics in the /proc/stat file.
+    @details Class which is used to represent lines containing CPU statistics in the /proc/stat file.
     """
 
     def __init__(self, system, user, nice, idle):
-        """
+        """!
         The constructor for CPU class.
-        :param system: time spend in system
-        :param user: time spend in user
-        :param nice: time spend in nice
-        :param idle: idle time
+        @param system: time spend in system
+        @param user: time spend in user
+        @param nice: time spend in nice
+        @param idle: idle time
         """
 
+        ## Time spend in system
         self.stime = system
+
+        ## Time spend in user
         self.utime = user
+
+        ## Time spend in nice
         self.nice = nice
+
+        ## Idle time
         self.idle = idle
+
+        ## Time spend booting
         self.starttime = 0
 
     def __str__(self):
-        """
+        """!
         Return a string representation of the CPU object.
-        :return: the string representation of the CPU object
+        @return the string representation of the CPU object
         """
 
         return (
@@ -40,9 +69,9 @@ class CPU:
         )
 
     def calculate_time_idle(self):
-        """
+        """!
         Calculate the time spend in idle.
-        :return: the time spend in idle
+        @return the time spend in idle
         """
         cal = 0
         for elt in self.idle:
@@ -51,30 +80,42 @@ class CPU:
 
 
 class Stat:
-    """
+    """!
     Documentation for Stat class
 
-    More details.
-    Class which is used to read the /proc/stat file.
+    @details Class which is used to read the /proc/stat file.
     """
 
     def __init__(self):
-        """
+        """!
         The constructor for Stat class.
         """
 
+        ## Dictionary containing the CPU statistics
         self.cpu_stats = {}
+
+        ## Interrupts
         self.intr = 0
+
+        ## Context switches
         self.context_switches = 0
+
+        ## Boot time
         self.boot_time = 0
+
+        ## Processes created
         self.processes_created = 0
+
+        ## Running processes
         self.running_processes = 0
+
+        ## Blocked processes
         self.blocked_processes = 0
 
     def read_stat(self):
-        """
+        """!
         Read the /proc/stat file and store the data in the Stat object.
-        :return: status of the read
+        @return status of the read (0 if successful, -1 if not)
         """
 
         try:
@@ -103,9 +144,9 @@ class Stat:
             return -1
 
     def __str__(self):
-        """
+        """!
         Return a string representation of the Stat object.
-        :return: the string representation of the Stat object
+        @return the string representation of the Stat object
         """
         result_str = ""
         for key, value in self.cpu_stats.items():

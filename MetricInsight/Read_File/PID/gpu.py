@@ -1,32 +1,52 @@
-""" @package PID
-Documentation for gpu module.
+"""!
+@brief Documentation for GPU file class.
 
-More details.
-Class for reading gpu files and create object GPU.
+@section package File Information
+- package : PID
+- name : gpu.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- None
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
 
 
 class GPU:
-    """ Documentation for GPU class
+    """!
+    Documentation for GPU class
 
-    More details.
-    Class which is used to represent lines containing GPU statistics in the /sys/devices/gpu.0/load file.
+    @details Class which is used to represent lines containing GPU statistics in the /sys/devices/gpu.0/load file.
     """
 
     def __init__(self, load=0, name="gpu.0"):
-        """
+        """!
         The constructor for GPU class.
-        :param name: name of the gpu
-        :param load: load of the gpu
+        @param name: name of the gpu
+        @param load: load of the gpu
         """
 
+        ## The name of the GPU
         self.name = name
+
+        ## The load of the GPU
         self.load = load
 
     def __str__(self):
-        """
-        Return a string representation of the GPU object.
-        :return: the string representation of the GPU object
+        """!
+        Override the string representation of the GPU object
+        @return the string representation of the GPU object
         """
 
         return (
@@ -35,9 +55,9 @@ class GPU:
         )
 
     def read(self):
-        """
+        """!
         Read the /sys/devices/gpu.0/load file.
-        :return:
+        @return the status of the function (0 if successful, -1 otherwise)
         """
 
         try:

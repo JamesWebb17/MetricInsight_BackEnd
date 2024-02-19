@@ -1,17 +1,51 @@
-"""
-@package routes
-@file metricInsight.py
-@brief This file is the entry point for the MetricInsight program. It defines the routes and the functions to start and stop the program.
-@details The program is started and stopped using the start and stop routes. The data is sent to the client using the get_data routes.
-@version 1.0
-@date 2024-02-12
+"""!
+@brief This file is the entry point for the MetricInsight metricInsight route.
+
+@details The MetricInsight blueprint is created and the MetricInsight routes are registered.
+
+@section package File Information
+- package : routes
+- name : metricInsight.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- flask (https://flask.palletsprojects.com/en/2.0.x/)
+--> Access to Blueprint, jsonify and request classes.
+- flask_cors (https://flask-cors.readthedocs.io/en/latest/)
+- queue (https://docs.python.org/3/library/queue.html)
+--> Access to queue class.
+- threading (https://docs.python.org/3/library/threading.html)
+--> Access to threading class.
+- copy (https://docs.python.org/3/library/copy.html)
+--> Access to deepcopy function.
+- MetricInsight.GPU.utilisation (local)
+--> Access to web_utilisation_gpu function.
+- MetricInsight.Memory.utilisation (local)
+--> Access to web_utilisation_all_memory and web_utilisation_memory functions.
+- MetricInsight.Power.utilisation (local)
+--> Access to web_tilisation_power function.
+- MetricInsight.CPU.utilisation (local)
+--> Access to web_utilisation_cpu and web_utilisation_cpus functions.
+- MetricInsight.Shared.flags (local)
+--> Access to END_FLAG, THREAD_CPU_END_FLAG, THREAD_GPU_END_FLAG, THREAD_MEM_END_FLAG and THREAD_POWER_END_FLAG flags.
+
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
 
 # Import the required packages
-import json
-import time
 
-from flask import Blueprint, jsonify, request, Response
+from flask import Blueprint, jsonify, request
 
 import threading
 import queue
@@ -23,18 +57,20 @@ from MetricInsight.Power.utilisation import web_tilisation_power
 from MetricInsight.CPU.utilisation import web_utilisation_cpu, web_utilisation_cpus
 from MetricInsight.Shared import flags
 
-# Global variables
+## shared_queues
+# Dictionary of shared queues
 global shared_queues
 
-# Create the blueprint
+## api_blueprint
+# Create the blueprint for the MetricInsight route
 MetricInsight_blueprint = Blueprint('MetricInsight', __name__, url_prefix='/MetricInsight')
 
 
 def get_data(name):
-    """
-    Send data to the client
-    :param name: name of the queue
-    :return:
+    """!
+    Send a message to the server
+    @param name : Name of the queue
+    @return Data for the client
     """
     data, flag = conso(shared_queues[name])
     data = {'data': data, 'running': flag}
@@ -43,63 +79,63 @@ def get_data(name):
 
 @MetricInsight_blueprint.route('/get_data/GPU', methods=['GET'])
 def get_data_GPU():
-    """
+    """!
     Sending GPU data to the client
-    :return: Data for the client
+    @return Data for the client
     """
     return get_data('GPU')
 
 
 @MetricInsight_blueprint.route('/get_data/Memory', methods=['GET'])
 def get_data_Memory():
-    """
+    """!
     Sending Memory data to the client
-    :return: Data for the client
+    @return: Data for the client
     """
     return get_data('MEM')
 
 
 @MetricInsight_blueprint.route('/get_data/Memory_PID', methods=['GET'])
 def get_data_Memory_PID():
-    """
+    """!
     Sending Memory_PID data to the client
-    :return: Data for the client
+    @return: Data for the client
     """
     return get_data('MEM')
 
 
 @MetricInsight_blueprint.route('/get_data/CPU_PID', methods=['GET'])
 def get_data_CPU_PID():
-    """
+    """!
     Sending CPU_PID data to the client
-    :return: Data for the client
+    @return: Data for the client
     """
     return get_data('CPU')
 
 
 @MetricInsight_blueprint.route('/get_data/CPU', methods=['GET'])
 def get_data_CPU():
-    """
+    """!
     Sending CPU data to the client
-    :return: Data for the client
+    @return: Data for the client
     """
     return get_data('CPU')
 
 
 @MetricInsight_blueprint.route('/get_data/Power', methods=['GET'])
 def get_data_Power():
-    """
+    """!
     Sending Power data to the client
-    :return: Data for the client
+    @return: Data for the client
     """
     return get_data('POWER')
 
 
 @MetricInsight_blueprint.route('/start', methods=['POST'])
 def start():
-    """
+    """!
     Start the MetricInsight program
-    :return: Response to the client (acknowledgement : True or False)
+    @return: Response to the client (acknowledgement : True or False)
     """
 
     flags.END_FLAG = False
@@ -160,9 +196,9 @@ def start():
 
 @MetricInsight_blueprint.route('/stop', methods=['POST'])
 def stop():
-    """
+    """!
     Stop the MetricInsight program
-    :return: Response to the client (acknowledgement : True or False)
+    @return: Response to the client (acknowledgement : True or False)
     """
 
     print('Arrêt de MetricInsight...')
@@ -171,10 +207,9 @@ def stop():
 
 
 def MetricInsight(configuration):
-    """
-    Start the different threads for the MetricInsight program
-    :param configuration:
-    :return:
+    """!
+    Start the different threads for the MetricInsight program depending on the configuration
+    @param configuration : Configuration chosen by the user to start MetricInsight
     """
 
     MAX_QUEUE_SIZE = int(configuration['FreqInput']) * 10
@@ -219,10 +254,10 @@ def MetricInsight(configuration):
 
 
 def conso(queueP):
-    """
+    """!
     Consume the queue
-    :param queueP:
-    :return: List of data and flag (True if the program is still running, False if the program is finished)
+    @param queueP : Queue to consume
+    @return: List of data and flag (True if the program is still running, False if the program is finished)
     """
     L = []
 

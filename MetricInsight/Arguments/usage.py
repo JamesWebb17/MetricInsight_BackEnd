@@ -1,17 +1,37 @@
-""" @package Arguments
-Documentation for Arguments module.
+"""!
+@brief This file contains the function for parsing arguments of MetricInsight.
 
-More details.
-Function for parsing arguments.
+@details The function usage() is used to parse the arguments of the program.
+
+@section package File Information
+- package : Arguments
+- name : usage.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- argparse (https://docs.python.org/3/library/argparse.html)
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
+
 
 import argparse
 
 
 def usage():
-    """
-    Parse arguments.
-    :return: arguments parsed
+    """!
+    Function used to parse the arguments of the program.
+    @return: arguments parsed
     """
 
     parser = argparse.ArgumentParser(description="Process performance monitoring program.", add_help=False)

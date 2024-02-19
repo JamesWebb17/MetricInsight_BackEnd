@@ -1,8 +1,31 @@
-""" @package Memory
-Documentation for GPU module.
+"""!
+@brief Documentation for GPU module.
 
-More details.
-Function for calculating the GPU charge.
+@section package File Information
+- package : GPU
+- name : utilisation.py
+
+@section author Author(s)
+- Created by Simon Faucher on 2023-10-01.
+- Modified by Simon Faucher on 2024-02-19.
+
+@section libraries_main Libraries/Modules
+- time (https://docs.python.org/3/library/time.html)
+- MetricInsight.Read_File.PID.gpu.GPU (local)
+--> Access to GPU class.
+- MetricInsight.Shared.flags (local)
+--> Access to THREAD_GPU_END_FLAG, THREAD_CPU_END_FLAG, THREAD_MEM_END_FLAG and END_FLAG.
+- MetricInsight.Shared.result.Result (local)
+--> Access to Result class.
+
+@section version Current Version
+- 1.0
+
+@section date Date
+- 2024-02-12
+
+@section copyright Copyright
+- Copyright (c) 2024 MetricInsight  All rights reserved.
 """
 
 import time
@@ -13,12 +36,12 @@ from MetricInsight.Shared.result import Result
 
 
 def utilisation_gpu(frequency, interval, result):
-    """
+    """!
     Find the Memory usage of a process in files /proc/[pid]/statm and /proc/uptime.
-    :param frequency: frequency of the points
-    :param interval: interval of time wanted
-    :param result: array for sending the result to the main thread
-    :return: status of the function
+    @param frequency: frequency of the points
+    @param interval: interval of time wanted
+    @param result: array for sending the result to the main thread
+    @return status of the function
     """
 
     start = time.clock_gettime(time.CLOCK_REALTIME)
@@ -43,11 +66,11 @@ def utilisation_gpu(frequency, interval, result):
 
 
 def web_utilisation_gpu(shared_queue, configuration):
-    """
+    """!
     Find the Memory usage of a process in files /proc/[pid]/statm and /proc/uptime.
-    :param shared_queue: queue for sending the result to the main thread
-    :param configuration: configuration of the program
-    :return: status of the function
+    @param shared_queue: queue for sending the result to the main thread
+    @param configuration: configuration of the program
+    @return status of the function
     """
 
     flags.THREAD_GPU_END_FLAG = False
