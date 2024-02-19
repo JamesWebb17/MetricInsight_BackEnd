@@ -23,6 +23,7 @@
 
 from flask import Blueprint, request, redirect
 
+# Create the blueprint for the contact route
 contact_blueprint = Blueprint('contact', __name__, url_prefix='/contact')
 
 @contact_blueprint.route('/send_message', methods=['POST'])
