@@ -221,7 +221,8 @@ def MetricInsight(configuration):
 
     # Create the threads depending on the configuration
     if configuration['gpuCheckbox']:
-        shared_queues['GPU'] = queue.Queue(MAX_QUEUE_SIZE)
+        test = queue.Queue(MAX_QUEUE_SIZE)
+        shared_queues['GPU'] = test
         threads['thread_GPU'] = threading.Thread(target=web_utilisation_gpu, args=(shared_queues['GPU'], configuration))
 
     if configuration['powerCheckbox']:
