@@ -74,7 +74,6 @@ def get_data(name):
     """
     data, flag = conso(shared_queues[name])
     data = {'data': data, 'running': flag}
-    print('shared_queues[name] :', shared_queues[name])
     return jsonify(data)
 
 
