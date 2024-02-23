@@ -74,6 +74,7 @@ def get_data(name):
     """
     data, flag = conso(shared_queues[name])
     data = {'data': data, 'running': flag}
+    print('shared_queues[name] :', shared_queues[name])
     return jsonify(data)
 
 
@@ -221,8 +222,7 @@ def MetricInsight(configuration):
 
     # Create the threads depending on the configuration
     if configuration['gpuCheckbox']:
-        test = queue.Queue(MAX_QUEUE_SIZE)
-        shared_queues['GPU'] = test
+        shared_queues['GPU'] = queue.Queue(MAX_QUEUE_SIZE)
         threads['thread_GPU'] = threading.Thread(target=web_utilisation_gpu, args=(shared_queues['GPU'], configuration))
 
     if configuration['powerCheckbox']:
