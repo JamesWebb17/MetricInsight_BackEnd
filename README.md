@@ -7,7 +7,7 @@ It is a flask application that is used to monitor the data from the computer and
 
 You can find the frontend of the application [here](https://github.com/JamesWebb17/MetricInsight_FrontEnd)
 
-This project is made by : Faucher Simon
+This project is made by : [Faucher Simon](https://www.linkedin.com/in/Faucher-Simon/)
 
 Version : 1.0
 
