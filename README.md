@@ -11,7 +11,7 @@ This project is made by : Faucher Simon
 
 Version : 1.0
 
-# Summary
+## Summary
 
 - [MetricInsights Backend](#metricinsights-frontend)
 - [Summary](#summary)
@@ -36,13 +36,13 @@ Version : 1.0
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
 
-# Installation
+## Installation
 
-## Prerequisites
+### Prerequisites
 
 To install the project, you need to have Node.js installed on your computer.
 
-## Dependencies
+### Dependencies
 
 This is the list of the dependencies used in the project:
 
@@ -61,7 +61,7 @@ To install the dependencies, you need to run the following command in the [root]
 pip install -r requirements.txt
 ```
 
-## Set up your environment
+### Set up your environment
 
 To set the project, you need to change the [.env](./.env) file in the [root](./) directory of the project.
 
@@ -90,7 +90,7 @@ PORT=3001
 BACKEND_IP=10.10.10.11
 ```
 
-## Running the project
+### Running the project
 
 To run the project, you have 2 options:
 
@@ -140,13 +140,13 @@ To run the project, you have 2 options:
   This option will run with the parameters set in the command line.
 
 
-# Organization
+## Organization
 
-## Directory structure
+### Directory structure
 
 This is the directory structure of the project:
 
-```bash
+```
 .
 ├── Documentation
 │   ├── html
@@ -200,7 +200,7 @@ This is the directory structure of the project:
 └── requirements.txt
 ```
 
-## Files
+### Files
 
 This is the list of the files in the project:
 
@@ -214,9 +214,9 @@ This is the list of the files in the project:
 - [LICENSE](./LICENSE) : This is the license file of the project.
 - [README.md](./README.md) : This is the file you are reading.
 
-# Docker
+## Docker
 
-## Build the image
+### Build the image
 
 To build the image, you need to run the following command in the [root](./) directory of the project:
 
@@ -224,7 +224,7 @@ To build the image, you need to run the following command in the [root](./) dire
 docker build -t metricinsights-backend .
 ```
 
-## Run the container
+### Run the container
 
 To run the container, you need to run the following command in the [root](./) directory of the project:
 
@@ -232,7 +232,7 @@ To run the container, you need to run the following command in the [root](./) di
 docker run -p 3001:3001 -d metricinsights-backend
 ```
 
-## Stop the container
+### Stop the container
 
 To stop the container, you need to run the following command in the [root](./) directory of the project:
 
@@ -240,7 +240,7 @@ To stop the container, you need to run the following command in the [root](./) d
 docker stop [container_id]
 ```
 
-## Remove the container
+### Remove the container
 
 To remove the container, you need to run the following command in the [root](./) directory of the project:
 
@@ -256,9 +256,9 @@ To remove the image, you need to run the following command in the [root](./) dir
 docker rmi metricinsights-backend
 ```
 
-# Documentation
+## Documentation
 
-## Doxygen
+### Doxygen
 
 To generate the doxygen, you need to run the following command in the [root](./) directory of the project:
 
@@ -268,19 +268,19 @@ doxygen Doxyfile
 
 The documentation will be generated in the [public/Documentation](./public/Documentation/Frontend) directory of the project.
 
-## API
+### API
 
 The API documentation is available in the [public/Documentation](./public/Documentation/Backend) directory of the project.
 
-# License
+## License
 
 This project is licensed under the CC License - see the [LICENSE](LICENSE) file for details.
 
-# Contact
+## Contact
 
 - Email : simon.faucher@etudiant.univ-rennes1.fr
 
-# Acknowledgements
+## Acknowledgements
 
 
 Thank to [Robin Gerzaguet](https://perso.univ-rennes1.fr/robin.gerzaguet/) whose enlightened advice helped me
